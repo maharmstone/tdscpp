@@ -1,0 +1,4 @@
+#pragma once
+
+#cmakedefine HAVE_GSSAPI 1
+#cmakedefine WITH_OPENSSL 1
