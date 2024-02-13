@@ -35,7 +35,7 @@ static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offse
         if (ptr == t.data() || ptr - t.data() > 2 || h >= 24)
             return false;
 
-        t = t.substr(ptr - t.data());
+        t = t.substr((size_t)(ptr - t.data()));
     }
 
     if (t.empty())
@@ -50,7 +50,7 @@ static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offse
             if (ptr == t.data() || ptr - t.data() > 2 || m >= 60)
                 return false;
 
-            t = t.substr(ptr - t.data());
+            t = t.substr((size_t)(ptr - t.data()));
         }
 
         if (!t.empty() && t.front() == ':') {
@@ -64,7 +64,7 @@ static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offse
                 if (ptr == t.data() || ptr - t.data() > 2 || s >= 60)
                     return false;
 
-                t = t.substr(ptr - t.data());
+                t = t.substr((size_t)(ptr - t.data()));
             }
 
             if (!t.empty() && t.front() == '.') {
@@ -79,7 +79,7 @@ static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offse
                     fracval *= 10;
                 }
 
-                t = t.substr(ptr - t.data());
+                t = t.substr((size_t)(ptr - t.data()));
             }
 
             while (!t.empty() && t.front() == ' ') {
@@ -161,7 +161,7 @@ static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offse
         if (ptr == t.data())
             return false;
 
-        t = t.substr(ptr - t.data());
+        t = t.substr((size_t)(ptr - t.data()));
     }
 
     if (t.empty() || t[0] != ':') {
