@@ -3984,9 +3984,14 @@ namespace tds {
         if (!r2->fetch_row())
             return false;
 
-        for (size_t i = 0; i < cols.size(); i++) {
-            cols[i].val.swap(r2->cols[i].val);
-            cols[i].is_null = r2->cols[i].is_null;
+        // cols is only set if sp_prepare can determine what the column types will be
+        if (cols.empty())
+            cols = r2->cols;
+        else {
+            for (size_t i = 0; i < cols.size(); i++) {
+                cols[i].val.swap(r2->cols[i].val);
+                cols[i].is_null = r2->cols[i].is_null;
+            }
         }
 
         return true;
@@ -3996,9 +4001,14 @@ namespace tds {
         if (!r2->fetch_row_no_wait())
             return false;
 
-        for (size_t i = 0; i < cols.size(); i++) {
-            cols[i].val.swap(r2->cols[i].val);
-            cols[i].is_null = r2->cols[i].is_null;
+        // cols is only set if sp_prepare can determine what the column types will be
+        if (cols.empty())
+            cols = r2->cols;
+        else {
+            for (size_t i = 0; i < cols.size(); i++) {
+                cols[i].val.swap(r2->cols[i].val);
+                cols[i].is_null = r2->cols[i].is_null;
+            }
         }
 
         return true;
