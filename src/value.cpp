@@ -1562,7 +1562,7 @@ namespace tds {
                 case 0b001110:
                 case 0b001111:
                     off += 5;
-                    o = read_bits(d, off, 3) - 8;
+                    o = (int64_t)(read_bits(d, off, 3) - 8);
                     off += 3;
                 break;
 
@@ -1583,7 +1583,7 @@ namespace tds {
                 case 0b011110:
                 case 0b011111:
                     off += 2;
-                    o = read_bits(d, off, 2);
+                    o = (int64_t)read_bits(d, off, 2);
                     off += 2;
                     break;
 
@@ -1596,7 +1596,7 @@ namespace tds {
                 case 0b100110:
                 case 0b100111:
                     off += 3;
-                    o = read_bits(d, off, 2) + 4;
+                    o = (int64_t)(read_bits(d, off, 2) + 4);
                     off += 2;
                     break;
 
@@ -1609,7 +1609,7 @@ namespace tds {
                 case 0b101110:
                 case 0b101111:
                     off += 3;
-                    o = read_bits(d, off, 3) + 8;
+                    o = (int64_t)(read_bits(d, off, 3) + 8);
                     off += 3;
                     break;
 
