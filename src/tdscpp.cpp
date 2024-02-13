@@ -3234,7 +3234,7 @@ namespace tds {
                             return;
                     }
 
-                    mess_list.emplace_back(move(m));
+                    mess_list.emplace_back(std::move(m));
                 }
 
                 mess_in_cv.notify_one();
