@@ -2163,7 +2163,7 @@ namespace tds {
                 if (col.type == sql_type::UDT)
                     q += u"VARBINARY(MAX)";
                 else
-                    q += type_to_string(col.type, col.max_length, col.precision, col.scale, col.collation, col.clr_name);
+                    q += type_to_string(col.type, (size_t)col.max_length, col.precision, col.scale, col.collation, col.clr_name);
 
                 first = false;
 
