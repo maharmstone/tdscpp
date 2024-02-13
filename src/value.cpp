@@ -3024,7 +3024,7 @@ namespace tds {
 
                 memcpy(&n, d.data(), 3);
 
-                return datetimeoffset{num_to_ymd(n - jan1900), time_t(0), 0};
+                return datetimeoffset{num_to_ymd((int)(n - jan1900)), time_t(0), 0};
             }
 
             case sql_type::TIME: {
