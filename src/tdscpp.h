@@ -373,56 +373,56 @@ namespace tds {
 
         while (!sv.empty()) {
             if (sv[0] < 0x80) {
-                *ptr = (uint8_t)sv[0];
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)sv[0];
                 ptr++;
 
                 if (ptr == t.end())
                     return;
             } else if (sv[0] < 0x800) {
-                *ptr = (uint8_t)(0xc0 | (sv[0] >> 6));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0xc0 | (sv[0] >> 6));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | (sv[0] & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | (sv[0] & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
             } else if (sv[0] < 0xd800) {
-                *ptr = (uint8_t)(0xe0 | (sv[0] >> 12));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0xe0 | (sv[0] >> 12));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | ((sv[0] >> 6) & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | ((sv[0] >> 6) & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | (sv[0] & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | (sv[0] & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
             } else if (sv[0] < 0xdc00) {
                 if (sv.length() < 2 || (sv[1] & 0xdc00) != 0xdc00) {
-                    *ptr = (uint8_t)0xef;
+                    *ptr = (std::ranges::range_value_t<U>)(uint8_t)0xef;
                     ptr++;
 
                     if (ptr == t.end())
                         return;
 
-                    *ptr = (uint8_t)0xbf;
+                    *ptr = (std::ranges::range_value_t<U>)(uint8_t)0xbf;
                     ptr++;
 
                     if (ptr == t.end())
                         return;
 
-                    *ptr = (uint8_t)0xbd;
+                    *ptr = (std::ranges::range_value_t<U>)(uint8_t)0xbd;
                     ptr++;
 
                     if (ptr == t.end())
@@ -432,27 +432,27 @@ namespace tds {
                     continue;
                 }
 
-                char32_t cp = 0x10000 | ((sv[0] & ~0xd800) << 10) | (sv[1] & ~0xdc00);
+                auto cp = (char32_t)(0x10000 | ((sv[0] & ~0xd800) << 10) | (sv[1] & ~0xdc00));
 
-                *ptr = (uint8_t)(0xf0 | (cp >> 18));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0xf0 | (cp >> 18));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | ((cp >> 12) & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | ((cp >> 12) & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | ((cp >> 6) & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | ((cp >> 6) & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | (cp & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | (cp & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
@@ -460,37 +460,37 @@ namespace tds {
 
                 sv = sv.substr(1);
             } else if (sv[0] < 0xe000) {
-                *ptr = (uint8_t)0xef;
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)0xef;
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)0xbf;
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)0xbf;
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)0xbd;
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)0xbd;
                 ptr++;
 
                 if (ptr == t.end())
                     return;
             } else {
-                *ptr = (uint8_t)(0xe0 | (sv[0] >> 12));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0xe0 | (sv[0] >> 12));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | ((sv[0] >> 6) & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | ((sv[0] >> 6) & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
                     return;
 
-                *ptr = (uint8_t)(0x80 | (sv[0] & 0x3f));
+                *ptr = (std::ranges::range_value_t<U>)(uint8_t)(0x80 | (sv[0] & 0x3f));
                 ptr++;
 
                 if (ptr == t.end())
