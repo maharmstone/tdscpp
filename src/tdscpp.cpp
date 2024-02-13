@@ -796,7 +796,7 @@ void handle_row_col(tds::value_data_t& val, bool& is_null, enum tds::sql_type ty
                 // FIXME - set vector length first of all
 
                 if (len != 0xfffffffffffffffe) // unknown length
-                    val.reserve(len);
+                    val.reserve((size_t)len);
 
                 do {
                     if (sp.size() < sizeof(uint32_t))
