@@ -2462,7 +2462,9 @@ namespace tds {
     static_assert(utf8_to_utf16("h\xf0\x9f\x95llo") == u"h\ufffd\ufffd\ufffdllo"); // first three bytes of 4-byte literal
     static_assert(utf8_to_utf16("h\xed\xa0\xbdllo") == u"h\ufffdllo"); // encoded surrogate
 
+#ifndef __clang__ // doesn't work with clang 17
     static_assert(utf16_to_utf8(u"hello") == "hello"); // single bytes
+#endif
     // Compiler bug on MSVC 16.10? These work as asserts but not static_asserts
 //     static_assert(utf16_to_utf8(u"h\xe9llo") == "h\xc3\xa9llo"); // 2-byte literal
 //     static_assert(utf16_to_utf8(u"h\u20acllo") == "h\xe2\x82\xacllo"); // 3-byte literal

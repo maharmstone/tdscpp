@@ -90,9 +90,11 @@ static_assert(value_test(tds::value{optional<string_view>("hello")}, tds::sql_ty
 static_assert(value_test(tds::value{optional<string_view>(nullopt)}, tds::sql_type::VARCHAR, true, { })); // optional<string_view>
 // FIXME - optional<char*>?
 
+#ifndef __clang__ // don't work with clang 17
 static_assert(value_test(tds::value{u8"hello"s}, tds::sql_type::VARCHAR, false, { 0x68, 0x65, 0x6c, 0x6c, 0x6f })); // u8string
 static_assert(value_test(tds::value{u8"h\u00e9llo"s}, tds::sql_type::VARCHAR, false, { 0x68, 0xc3, 0xa9, 0x6c, 0x6c, 0x6f })); // u8string
 static_assert(value_test(tds::value{u8"h\U0001f525llo"s}, tds::sql_type::VARCHAR, false, { 0x68, 0xf0, 0x9f, 0x94, 0xa5, 0x6c, 0x6c, 0x6f })); // u8string
+#endif
 static_assert(value_test(tds::value{u8"hello"sv}, tds::sql_type::VARCHAR, false, { 0x68, 0x65, 0x6c, 0x6c, 0x6f })); // u8string_view
 static_assert(value_test(tds::value{u8"h\u00e9llo"sv}, tds::sql_type::VARCHAR, false, { 0x68, 0xc3, 0xa9, 0x6c, 0x6c, 0x6f })); // u8string_view
 static_assert(value_test(tds::value{u8"h\U0001f525llo"sv}, tds::sql_type::VARCHAR, false, { 0x68, 0xf0, 0x9f, 0x94, 0xa5, 0x6c, 0x6c, 0x6f })); // u8string_view
