@@ -1820,7 +1820,7 @@ namespace tds {
                 memcpy(&v, d.data(), 3);
                 v &= 0xffffff;
 
-                auto dt = num_to_ymd(v - jan1900);
+                auto dt = num_to_ymd((int)(v - jan1900));
 
                 return format("{:04}-{:02}-{:02}", (int)dt.year(), (unsigned int)dt.month(), (unsigned int)dt.day());
             }
@@ -1860,7 +1860,7 @@ namespace tds {
                 memcpy(&v, d.data() + d.size() - 3, 3);
                 v &= 0xffffff;
 
-                datetime dt(num_to_ymd(v - jan1900), time_t(ticks));
+                datetime dt(num_to_ymd((int)(v - jan1900)), time_t(ticks));
 
                 return format("{:{}}", dt, max_length2);
             }
@@ -1927,7 +1927,7 @@ namespace tds {
                 v &= 0xffffff;
 
                 datetimeoffset dto;
-                dto.d = num_to_ymd(v - jan1900);
+                dto.d = num_to_ymd((int)(v - jan1900));
                 dto.t = time_t{ticks};
                 dto.offset = *(int16_t*)(d.data() + d.size() - sizeof(int16_t));
 
