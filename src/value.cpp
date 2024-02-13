@@ -975,7 +975,7 @@ static constexpr bool parse_datetimeoffset(string_view t, uint16_t& y, uint8_t& 
 
             auto [ptr, ec] = from_chars(t.data(), t.data() + min(t.length(), (size_t)7), v);
 
-            auto fraclen = ptr - t.data();
+            auto fraclen = (size_t)(ptr - t.data());
 
             if (fraclen == 0)
                 return false;
