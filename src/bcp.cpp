@@ -301,7 +301,7 @@ namespace tds {
                 bufsize = 1;
 
                 if (!vv.is_null)
-                    bufsize += col.max_length;
+                    bufsize += (size_t)col.max_length;
                 break;
 
             case sql_type::VARCHAR:
@@ -443,14 +443,14 @@ namespace tds {
                 bufsize = 1;
 
                 if (!vv.is_null)
-                    bufsize += col.max_length;
+                    bufsize += (size_t)col.max_length;
                 break;
 
             case sql_type::FLTN:
                 bufsize = 1;
 
                 if (!vv.is_null)
-                    bufsize += col.max_length;
+                    bufsize += (size_t)col.max_length;
                 break;
 
             case sql_type::BITN:
@@ -510,7 +510,7 @@ namespace tds {
                 bufsize = sizeof(uint8_t);
 
                 if (!vv.is_null)
-                    bufsize += col.max_length;
+                    bufsize += (size_t)col.max_length;
                 break;
 
             case sql_type::MONEY:
