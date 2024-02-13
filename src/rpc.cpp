@@ -739,7 +739,6 @@ namespace tds {
                     cols.clear();
                     cols.reserve(num_columns);
 
-                    size_t len = sizeof(uint16_t);
                     auto sp2 = sp;
 
                     sp2 = sp2.subspan(sizeof(uint16_t));
@@ -750,7 +749,6 @@ namespace tds {
 
                         auto& c = *(tds_colmetadata_col*)&sp2[0];
 
-                        len += sizeof(tds_colmetadata_col);
                         sp2 = sp2.subspan(sizeof(tds_colmetadata_col));
 
                         cols.emplace_back();
@@ -792,7 +790,6 @@ namespace tds {
 
                                 col.max_length = *(uint8_t*)sp2.data();
 
-                                len++;
                                 sp2 = sp2.subspan(1);
                                 break;
 
@@ -807,7 +804,6 @@ namespace tds {
 
                                 col.coll = *(collation*)(sp2.data() + sizeof(uint16_t));
 
-                                len += sizeof(uint16_t) + sizeof(collation);
                                 sp2 = sp2.subspan(sizeof(uint16_t) + sizeof(collation));
                                 break;
                             }
@@ -819,7 +815,6 @@ namespace tds {
 
                                 col.max_length = *(uint16_t*)sp2.data();
 
-                                len += sizeof(uint16_t);
                                 sp2 = sp2.subspan(sizeof(uint16_t));
                                 break;
 
@@ -827,7 +822,6 @@ namespace tds {
                                 if (sp2.size() < sizeof(uint8_t))
                                     throw formatted_error("Short COLMETADATA message ({} bytes left, expected at least 1).", sp2.size());
 
-                                len += sizeof(uint8_t);
                                 sp2 = sp2.subspan(sizeof(uint8_t));
                                 break;
 
@@ -840,7 +834,6 @@ namespace tds {
                                 col.precision = (uint8_t)sp2[1];
                                 col.scale = (uint8_t)sp2[2];
 
-                                len += 3;
                                 sp2 = sp2.subspan(3);
 
                                 break;
@@ -976,7 +969,6 @@ namespace tds {
                         auto name_len = *(uint8_t*)&sp2[0];
 
                         sp2 = sp2.subspan(1);
-                        len++;
 
                         if (sp2.size() < name_len * sizeof(char16_t))
                             throw formatted_error("Short COLMETADATA message ({} bytes left, expected at least {}).", sp2.size(), name_len * sizeof(char16_t));
@@ -984,7 +976,6 @@ namespace tds {
                         col.name = u16string_view((char16_t*)sp2.data(), name_len);
 
                         sp2 = sp2.subspan(name_len * sizeof(char16_t));
-                        len += name_len * sizeof(char16_t);
                     }
 
                     break;
