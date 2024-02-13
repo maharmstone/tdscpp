@@ -4982,7 +4982,7 @@ WHERE columns.object_id = OBJECT_ID(?))"), db.empty() ? table : (u16string(db) +
 
     datetime datetime::now() {
         auto n = chrono::system_clock::now();
-        auto secs = chrono::duration_cast<chrono::seconds>(n.time_since_epoch()).count();
+        auto secs = static_cast<::time_t>(chrono::duration_cast<chrono::seconds>(n.time_since_epoch()).count());
         struct tm t;
         int offset;
 
@@ -5005,7 +5005,7 @@ WHERE columns.object_id = OBJECT_ID(?))"), db.empty() ? table : (u16string(db) +
 
     datetimeoffset datetimeoffset::now() {
         auto n = chrono::system_clock::now();
-        auto secs = chrono::duration_cast<chrono::seconds>(n.time_since_epoch()).count();
+        auto secs = static_cast<::time_t>(chrono::duration_cast<chrono::seconds>(n.time_since_epoch()).count());
         struct tm t;
         int offset;
 
