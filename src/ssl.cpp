@@ -488,7 +488,7 @@ namespace tds {
                 throw formatted_error("SSL_write failed (error {})", SSL_get_error(ssl.get(), ret));
             }
 
-            sp = sp.subspan(ret);
+            sp = sp.subspan((size_t)ret);
         }
 
         return ssl_send_buf;
