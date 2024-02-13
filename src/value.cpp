@@ -394,7 +394,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
                 if (ptr == s.data())
                     return false;
 
-                s = s.substr(ptr - s.data());
+                s = s.substr((size_t)(ptr - s.data()));
 
                 d = (uint8_t)num;
 
@@ -417,7 +417,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
                     if (ptr == s.data())
                         return false;
 
-                    s = s.substr(ptr - s.data());
+                    s = s.substr((size_t)(ptr - s.data()));
                 }
 
                 if (!s.empty() && (s.front() == '-' || s.front() == '/'))
@@ -432,7 +432,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
                     if (ptr == s.data())
                         return false;
 
-                    s = s.substr(ptr - s.data());
+                    s = s.substr((size_t)(ptr - s.data()));
                 }
 
                 s2 = s;
@@ -441,7 +441,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
             } else if (s.length() < 2 || (ptr != s.data() + 1 && ptr != s.data() + 2))
                 return false;
 
-            s = s.substr(ptr - s.data());
+            s = s.substr((size_t)(ptr - s.data()));
         }
 
         d = (uint8_t)num;
@@ -461,7 +461,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
                 if (m == 0)
                     return false;
             } else
-                s = s.substr(ptr - s.data());
+                s = s.substr((size_t)(ptr - s.data()));
         }
 
         if (!s.empty() && (s.front() == ' ' || s.front() == '-' || s.front() == '/'))
@@ -475,7 +475,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
         if (s.length() >= 4 && ptr == s.data() + 4) // dd/mm/yyyy
             s = s.substr(4);
         else if ((s.length() >= 1 && ptr == s.data() + 1) || (s.length() >= 2 && ptr == s.data() + 2)) {
-            s = s.substr(ptr - s.data());
+            s = s.substr((size_t)(ptr - s.data()));
 
             if (y >= 50)
                 y += 1900;
@@ -515,7 +515,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
             if (s.length() < 2 || (ptr != s.data() + 1 && ptr != s.data() + 2))
                 return false;
 
-            s = s.substr(ptr - s.data());
+            s = s.substr((size_t)(ptr - s.data()));
         }
 
         if (!s.empty() && s.front() == ',')
