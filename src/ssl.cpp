@@ -314,7 +314,7 @@ namespace tds {
 
             rb.read(span(sp.data(), to_copy));
 
-            return to_copy;
+            return (int)to_copy;
         } else {
             int copied = 0;
 
