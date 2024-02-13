@@ -282,7 +282,7 @@ namespace tds {
 
         us.resize(s.length() * 2); // sic - each input byte might expand to 2 char16_ts
 
-        auto len = ucnv_toUChars(conv, us.data(), (int32_t)us.length() / sizeof(char16_t), s.data(), (int32_t)s.length(), &status);
+        auto len = ucnv_toUChars(conv, us.data(), (int32_t)(us.length() / sizeof(char16_t)), s.data(), (int32_t)s.length(), &status);
 
         if (us.length() > (uint32_t)len)
             us = us.substr(0, (uint32_t)len);
