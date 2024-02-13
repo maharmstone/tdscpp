@@ -2553,7 +2553,7 @@ struct std::formatter<tds::datetime> {
         auto hms = std::chrono::hh_mm_ss{dt.t};
 
         if (len_arg != -1) {
-            auto arg = ctx.arg(len_arg);
+            auto arg = ctx.arg((size_t)len_arg);
 
             std::visit_format_arg([&](auto&& v) {
                 if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
@@ -2615,7 +2615,7 @@ struct std::formatter<tds::datetimeoffset> {
         auto len2 = len;
 
         if (len_arg != -1) {
-            auto arg = ctx.arg(len_arg);
+            auto arg = ctx.arg((size_t)len_arg);
 
             std::visit_format_arg([&](auto&& v) {
                 if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
