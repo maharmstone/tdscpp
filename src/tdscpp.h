@@ -2292,11 +2292,11 @@ namespace tds {
 
         constexpr operator int64_t() noexcept {
             if constexpr (N == 0)
-                return neg ? -(int64_t)low_part : low_part;
+                return neg ? -(int64_t)low_part : (int64_t)low_part;
             else {
                 numeric<0> n = *this;
 
-                return neg ? -(int64_t)n.low_part : n.low_part;
+                return neg ? -(int64_t)n.low_part : (int64_t)n.low_part;
             }
         }
 
