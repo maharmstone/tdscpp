@@ -2752,7 +2752,7 @@ namespace tds {
                             return;
                     }
 
-                    sess.mess_list.emplace_back(move(m));
+                    sess.mess_list.emplace_back(std::move(m));
                 }
 
                 sess.mess_in_cv.notify_one();
