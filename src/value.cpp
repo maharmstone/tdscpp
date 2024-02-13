@@ -2479,7 +2479,7 @@ namespace tds {
 
                 memcpy(&n, d.data(), 3);
 
-                return num_to_ymd(n - jan1900);
+                return num_to_ymd((int)(n - jan1900));
             }
 
             case sql_type::DATETIME:
