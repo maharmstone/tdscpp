@@ -770,7 +770,7 @@ namespace tds {
                         if (vv.val.size() > (uint16_t)col.max_length) {
                             throw formatted_error("String \"{}\" too long for column {} (maximum length {}).",
                                                     utf16_to_utf8(u16string_view((char16_t*)vv.val.data(), vv.val.size() / sizeof(char16_t))),
-                                                    utf16_to_utf8(col_name), col.max_length / sizeof(char16_t));
+                                                    utf16_to_utf8(col_name), (size_t)col.max_length / sizeof(char16_t));
                         }
 
                         *(uint16_t*)ptr = (uint16_t)vv.val.size();
@@ -784,7 +784,7 @@ namespace tds {
                         if (s.length() > (uint16_t)col.max_length) {
                             throw formatted_error("String \"{}\" too long for column {} (maximum length {}).",
                                                     utf16_to_utf8(u16string_view((char16_t*)s.data(), s.length() / sizeof(char16_t))),
-                                                    utf16_to_utf8(col_name), col.max_length / sizeof(char16_t));
+                                                    utf16_to_utf8(col_name), (size_t)col.max_length / sizeof(char16_t));
                         }
 
                         *(uint16_t*)ptr = (uint16_t)(s.length() * sizeof(char16_t));
@@ -850,7 +850,7 @@ namespace tds {
                         throw formatted_error("{} (column {})", e.what(), utf16_to_utf8(col_name));
                     }
 
-                    uint32_t n = ymd_to_num(d) + jan1900;
+                    auto n = (uint32_t)(ymd_to_num(d) + jan1900);
 
                     *(uint8_t*)ptr = 3;
                     ptr++;
@@ -868,7 +868,7 @@ namespace tds {
                     uint64_t ticks;
 
                     try {
-                        ticks = time_t(vv).count();
+                        ticks = (uint64_t)time_t(vv).count();
                     } catch (const exception& e) {
                         throw formatted_error("{} (column {})", e.what(), utf16_to_utf8(col_name));
                     }
@@ -912,7 +912,7 @@ namespace tds {
                         throw formatted_error("{} (column {})", e.what(), utf16_to_utf8(col_name));
                     }
 
-                    uint32_t n = ymd_to_num(dt.d) + jan1900;
+                    auto n = (uint32_t)(ymd_to_num(dt.d) + jan1900);
                     auto ticks = dt.t.count();
 
                     for (int j = 0; j < 7 - col.scale; j++) {
@@ -957,7 +957,7 @@ namespace tds {
                         throw formatted_error("{} (column {})", e.what(), utf16_to_utf8(col_name));
                     }
 
-                    uint32_t n = ymd_to_num(dto.d) + jan1900;
+                    auto n = (uint32_t)(ymd_to_num(dto.d) + jan1900);
                     auto ticks = dto.t.count();
 
                     for (int j = 0; j < 7 - col.scale; j++) {
