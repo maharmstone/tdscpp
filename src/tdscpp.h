@@ -2590,7 +2590,7 @@ struct std::formatter<tds::datetimeoffset> {
 
         if (it != ctx.end()) {
             if (*it >= '0' && *it <= '7') {
-                len = *it - '0';
+                len = (unsigned int)(*it - '0');
                 it++;
             } else if (*it == '{') {
                 it++;
