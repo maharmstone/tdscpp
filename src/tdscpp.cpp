@@ -3334,7 +3334,7 @@ namespace tds {
             }
 
             break;
-        } while ((res = res->ai_next));
+        } while ((res = res->ai_next) != nullptr);
 
         freeaddrinfo(orig_res);
 
