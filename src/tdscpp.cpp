@@ -4901,7 +4901,7 @@ WHERE columns.object_id = OBJECT_ID(?))"), db.empty() ? table : (u16string(db) +
             }
 
             break;
-        } while ((res = res->ai_next));
+        } while ((res = res->ai_next) != nullptr);
 
         freeaddrinfo(orig_res);
 
