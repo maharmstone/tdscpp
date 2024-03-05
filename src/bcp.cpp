@@ -1308,7 +1308,18 @@ namespace tds {
                                 }
                             }
 
-                            if (precision == col.precision && scale == col.scale) {
+                            uint8_t size;
+
+                            if (col.precision < 10) // 4 bytes
+                                size = 5;
+                            else if (col.precision < 20) // 8 bytes
+                                size = 9;
+                            else if (col.precision < 29) // 12 bytes
+                                size = 13;
+                            else // 16 bytes
+                                size = 17;
+
+                            if (precision == col.precision && scale == col.scale && data.size() == size) {
                                 *ptr = (uint8_t)data.size();
                                 ptr++;
                                 memcpy(ptr, data.data(), data.size());
@@ -1324,48 +1335,37 @@ namespace tds {
                                 n.ten_div();
                             }
 
-                            if (col.precision < 10) { // 4 bytes
-                                *ptr = 5;
-                                ptr++;
+                            *ptr = size;
+                            ptr++;
+                            *ptr = n.neg ? 0 : 1;
+                            ptr++;
 
-                                *ptr = n.neg ? 0 : 1;
-                                ptr++;
+                            switch (size) {
+                                case 5:
+                                    *(uint32_t*)ptr = (uint32_t)n.low_part;
+                                    ptr += sizeof(uint32_t);
+                                break;
 
-                                *(uint32_t*)ptr = (uint32_t)n.low_part;
-                                ptr += sizeof(uint32_t);
-                            } else if (col.precision < 20) { // 8 bytes
-                                *ptr = 9;
-                                ptr++;
+                                case 9:
+                                    *(uint64_t*)ptr = n.low_part;
+                                    ptr += sizeof(uint64_t);
+                                break;
 
-                                *ptr = n.neg ? 0 : 1;
-                                ptr++;
+                                case 13:
+                                    *(uint64_t*)ptr = n.low_part;
+                                    ptr += sizeof(uint64_t);
 
-                                *(uint64_t*)ptr = n.low_part;
-                                ptr += sizeof(uint64_t);
-                            } else if (col.precision < 29) { // 12 bytes
-                                *ptr = 13;
-                                ptr++;
+                                    *(uint32_t*)ptr = (uint32_t)n.high_part;
+                                    ptr += sizeof(uint32_t);
+                                break;
 
-                                *ptr = n.neg ? 0 : 1;
-                                ptr++;
+                                case 17:
+                                    *(uint64_t*)ptr = n.low_part;
+                                    ptr += sizeof(uint64_t);
 
-                                *(uint64_t*)ptr = n.low_part;
-                                ptr += sizeof(uint64_t);
-
-                                *(uint32_t*)ptr = (uint32_t)n.high_part;
-                                ptr += sizeof(uint32_t);
-                            } else { // 16 bytes
-                                *ptr = 17;
-                                ptr++;
-
-                                *ptr = n.neg ? 0 : 1;
-                                ptr++;
-
-                                *(uint64_t*)ptr = n.low_part;
-                                ptr += sizeof(uint64_t);
-
-                                *(uint64_t*)ptr = n.high_part;
-                                ptr += sizeof(uint64_t);
+                                    *(uint64_t*)ptr = n.high_part;
+                                    ptr += sizeof(uint64_t);
+                                break;
                             }
 
                             break;
