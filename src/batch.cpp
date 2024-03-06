@@ -20,6 +20,30 @@
 
 using namespace std;
 
+static void send_batch_msg(tds::sendable auto& s, tds::batch_impl& b, u16string_view q, uint64_t trans_id) {
+    size_t bufsize;
+
+    bufsize = sizeof(tds_all_headers) + (q.length() * sizeof(uint16_t));
+
+    vector<uint8_t> buf(bufsize);
+
+    auto all_headers = (tds_all_headers*)&buf[0];
+
+    all_headers->total_size = sizeof(tds_all_headers);
+    all_headers->size = sizeof(uint32_t) + sizeof(tds_header_trans_desc);
+    all_headers->trans_desc.type = 2; // transaction descriptor
+    all_headers->trans_desc.descriptor = trans_id;
+    all_headers->trans_desc.outstanding = 1;
+
+    auto ptr = (char16_t*)&all_headers[1];
+
+    memcpy(ptr, q.data(), q.length() * sizeof(char16_t));
+
+    s.send_msg(tds_msg::sql_batch, buf);
+
+    b.wait_for_packet();
+}
+
 namespace tds {
     void batch::do_batch(tds& conn, u16string_view q) {
         impl = new batch_impl(conn, q);
@@ -34,56 +58,16 @@ namespace tds {
     }
 
     batch_impl::batch_impl(tds& conn, u16string_view q) : conn(conn) {
-        size_t bufsize;
-
-        bufsize = sizeof(tds_all_headers) + (q.length() * sizeof(uint16_t));
-
-        vector<uint8_t> buf(bufsize);
-
-        auto all_headers = (tds_all_headers*)&buf[0];
-
-        all_headers->total_size = sizeof(tds_all_headers);
-        all_headers->size = sizeof(uint32_t) + sizeof(tds_header_trans_desc);
-        all_headers->trans_desc.type = 2; // transaction descriptor
-        all_headers->trans_desc.descriptor = conn.impl->trans_id;
-        all_headers->trans_desc.outstanding = 1;
-
-        auto ptr = (char16_t*)&all_headers[1];
-
-        memcpy(ptr, q.data(), q.length() * sizeof(char16_t));
-
         if (conn.impl->mars_sess)
-            conn.impl->mars_sess->send_msg(tds_msg::sql_batch, buf);
+            send_batch_msg(*conn.impl->mars_sess, *this, q, conn.impl->trans_id);
         else
-            conn.impl->sess.send_msg(tds_msg::sql_batch, buf);
-
-        wait_for_packet();
+            send_batch_msg(conn.impl->sess, *this, q, conn.impl->trans_id);
     }
 
     batch_impl::batch_impl(session& sess, u16string_view q) : conn(sess.conn) {
-        size_t bufsize;
-
         this->sess.emplace(*sess.impl.get());
 
-        bufsize = sizeof(tds_all_headers) + (q.length() * sizeof(uint16_t));
-
-        vector<uint8_t> buf(bufsize);
-
-        auto all_headers = (tds_all_headers*)&buf[0];
-
-        all_headers->total_size = sizeof(tds_all_headers);
-        all_headers->size = sizeof(uint32_t) + sizeof(tds_header_trans_desc);
-        all_headers->trans_desc.type = 2; // transaction descriptor
-        all_headers->trans_desc.descriptor = conn.impl->trans_id;
-        all_headers->trans_desc.outstanding = 1;
-
-        auto ptr = (char16_t*)&all_headers[1];
-
-        memcpy(ptr, q.data(), q.length() * sizeof(char16_t));
-
-        sess.impl->send_msg(tds_msg::sql_batch, buf);
-
-        wait_for_packet();
+        send_batch_msg(*sess.impl, *this, q, conn.impl->trans_id);
     }
 
     batch_impl::~batch_impl() {
