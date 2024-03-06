@@ -828,7 +828,7 @@ namespace tds {
                             case sql_type::DECIMAL:
                             case sql_type::NUMERIC:
                                 if (sp2.size() < 3)
-                                    throw formatted_error("Short COLMETADATA message ({} bytes left, expected at least 3).", sp2.size(), 3);
+                                    throw formatted_error("Short COLMETADATA message ({} bytes left, expected at least 3).", sp2.size());
 
                                 col.max_length = (uint8_t)sp2[0];
                                 col.precision = (uint8_t)sp2[1];
