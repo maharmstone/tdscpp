@@ -21,10 +21,6 @@
 using namespace std;
 
 namespace tds {
-    void rpc::do_rpc(tds& conn, string_view rpc_name) {
-        do_rpc(conn, utf8_to_utf16(rpc_name));
-    }
-
     void rpc::do_rpc(tds& conn, u16string_view rpc_name) {
         size_t bufsize;
 
@@ -544,10 +540,6 @@ namespace tds {
             conn.impl->sess.send_msg(tds_msg::rpc, buf);
 
         wait_for_packet();
-    }
-
-    void rpc::do_rpc(session& sess, string_view rpc_name) {
-        do_rpc(sess, utf8_to_utf16(rpc_name));
     }
 
     void rpc::do_rpc(session& sess, u16string_view rpc_name) {
