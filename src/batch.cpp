@@ -177,10 +177,10 @@ namespace tds {
 
             span<const uint8_t> sp = t;
 
-            auto type = (token)sp[0];
+            auto token_type = (token)sp[0];
             sp = sp.subspan(1);
 
-            switch (type) {
+            switch (token_type) {
                 case token::DONE:
                 case token::DONEINPROC:
                 case token::DONEPROC:
@@ -201,24 +201,24 @@ namespace tds {
                 case token::ENVCHANGE:
                 {
                     if (sp.size() < sizeof(uint16_t))
-                        throw formatted_error("Short {} message ({} bytes, expected at least 2).", type, sp.size());
+                        throw formatted_error("Short {} message ({} bytes, expected at least 2).", token_type, sp.size());
 
                     auto len = *(uint16_t*)&sp[0];
 
                     sp = sp.subspan(sizeof(uint16_t));
 
                     if (sp.size() < len)
-                        throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), len);
+                        throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), len);
 
-                    if (type == token::INFO) {
+                    if (token_type == token::INFO) {
                         if (conn.impl->message_handler)
                             conn.impl->handle_info_msg(sp.subspan(0, len), false);
-                    } else if (type == token::TDS_ERROR) {
+                    } else if (token_type == token::TDS_ERROR) {
                         if (conn.impl->message_handler)
                             conn.impl->handle_info_msg(sp.subspan(0, len), true);
                         else
                             throw formatted_error("SQL batch failed: {}", utf16_to_utf8(extract_message(sp.subspan(0, len))));
-                    } else if (type == token::ENVCHANGE)
+                    } else if (token_type == token::ENVCHANGE)
                         conn.impl->handle_envchange_msg(sp.subspan(0, len));
 
                     break;
@@ -520,7 +520,7 @@ namespace tds {
                 }
 
                 default:
-                    throw formatted_error("Unhandled token type {} while executing SQL batch.", type);
+                    throw formatted_error("Unhandled token type {} while executing SQL batch.", token_type);
             }
         }
 
