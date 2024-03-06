@@ -167,9 +167,9 @@ namespace tds {
             }
         }
 
-        vector<uint8_t> buf(bufsize);
+        vector<uint8_t> msg_buf(bufsize);
 
-        auto all_headers = (tds_all_headers*)&buf[0];
+        auto all_headers = (tds_all_headers*)&msg_buf[0];
 
         all_headers->total_size = sizeof(tds_all_headers);
         all_headers->size = sizeof(uint32_t) + sizeof(tds_header_trans_desc);
@@ -533,11 +533,11 @@ namespace tds {
         }
 
         if (sess)
-            sess->get().send_msg(tds_msg::rpc, buf);
+            sess->get().send_msg(tds_msg::rpc, msg_buf);
         else if (conn.impl->mars_sess)
-            conn.impl->mars_sess->send_msg(tds_msg::rpc, buf);
+            conn.impl->mars_sess->send_msg(tds_msg::rpc, msg_buf);
         else
-            conn.impl->sess.send_msg(tds_msg::rpc, buf);
+            conn.impl->sess.send_msg(tds_msg::rpc, msg_buf);
 
         wait_for_packet();
     }
