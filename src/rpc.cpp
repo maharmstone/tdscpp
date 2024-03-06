@@ -21,7 +21,7 @@
 using namespace std;
 
 namespace tds {
-    void rpc::do_rpc(tds& conn, u16string_view rpc_name) {
+    void rpc::do_rpc(u16string_view rpc_name) {
         size_t bufsize;
 
         this->name = rpc_name;
@@ -542,10 +542,10 @@ namespace tds {
         wait_for_packet();
     }
 
-    void rpc::do_rpc(session& sess, u16string_view rpc_name) {
-        this->sess.emplace(*sess.impl.get());
+    void rpc::do_rpc(session& sess2, u16string_view rpc_name) {
+        sess.emplace(*sess2.impl.get());
 
-        do_rpc(sess.conn, rpc_name);
+        do_rpc(rpc_name);
     }
 
     rpc::~rpc() {

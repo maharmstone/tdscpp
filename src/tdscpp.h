@@ -1426,11 +1426,11 @@ namespace tds {
 
             add_param(args...);
 
-            do_rpc(conn, rpc_name);
+            do_rpc(rpc_name);
         }
 
         rpc(tds& tds, std::u16string_view rpc_name) : conn(tds) {
-            do_rpc(conn, rpc_name);
+            do_rpc(rpc_name);
         }
 
         template<typename... Args>
@@ -1439,11 +1439,11 @@ namespace tds {
 
             add_param(args...);
 
-            do_rpc(conn, utf8_to_utf16(rpc_name));
+            do_rpc(utf8_to_utf16(rpc_name));
         }
 
         rpc(tds& tds, std::string_view rpc_name) : conn(tds) {
-            do_rpc(conn, utf8_to_utf16(rpc_name));
+            do_rpc(utf8_to_utf16(rpc_name));
         }
 
         template<typename... Args>
@@ -1519,8 +1519,8 @@ namespace tds {
                 params.emplace_back(v.value());
         }
 
-        void do_rpc(tds& conn, std::u16string_view name);
-        void do_rpc(session& sess, std::u16string_view name);
+        void do_rpc(std::u16string_view name);
+        void do_rpc(session& sess2, std::u16string_view name);
         void wait_for_packet();
 
         tds& conn;
