@@ -602,9 +602,7 @@ namespace tds {
                     t.swap(tokens.front());
                     tokens.pop_front();
 
-                    auto type = (token)t[0];
-
-                    switch (type) {
+                    switch ((token)t[0]) {
                         case token::DONE:
                         case token::DONEINPROC:
                         case token::DONEPROC: {
