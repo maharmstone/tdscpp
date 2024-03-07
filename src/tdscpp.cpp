@@ -3918,8 +3918,8 @@ namespace tds {
         return s;
     }
 
-    // FIXME - can we do static assert if no. of question marks different from no. of parameters?
-    void query::do_query(tds& conn, u16string_view q) {
+    static unique_ptr<rpc> do_query2(tds_or_session auto& s, u16string_view q, const vector<value>& params,
+                                     output_param<int32_t>& handle, bool conn_utf8, vector<column>& cols) {
         if (!params.empty()) {
             u16string q2;
             bool in_quotes = false;
@@ -3940,13 +3940,13 @@ namespace tds {
                     q2 += q[i];
             }
 
-            rpc r1(conn, u"sp_prepare", handle, create_params_string(params, conn.impl->coll.utf8), q2, 1); // 1 means return metadata
+            rpc r1(s, u"sp_prepare", handle, create_params_string(params, conn_utf8), q2, 1); // 1 means return metadata
 
             while (r1.fetch_row()) { }
 
             cols = r1.cols;
         } else {
-            rpc r1(conn, u"sp_prepare", handle, u"", q, 1); // 1 means return metadata
+            rpc r1(s, u"sp_prepare", handle, u"", q, 1); // 1 means return metadata
 
             while (r1.fetch_row()) { }
 
@@ -3956,49 +3956,18 @@ namespace tds {
         if (handle.is_null)
             throw runtime_error("sp_prepare failed.");
 
-        r2 = make_unique<rpc>(conn, u"sp_execute", static_cast<value>(handle), params);
+        return make_unique<rpc>(s, u"sp_execute", static_cast<value>(handle), params);
+    }
+
+    // FIXME - can we do static assert if no. of question marks different from no. of parameters?
+    void query::do_query(tds& conn, u16string_view q) {
+        r2 = do_query2(conn, q, params, handle, conn.impl->coll.utf8, cols);
     }
 
     void query::do_query(session& sess, u16string_view q) {
         this->sess = sess;
 
-        if (!params.empty()) {
-            u16string q2;
-            bool in_quotes = false;
-            unsigned int param_num = 1;
-
-            // replace ? in q with parameters
-
-            q2.reserve(q.length());
-
-            for (unsigned int i = 0; i < q.length(); i++) {
-                if (q[i] == '\'')
-                    in_quotes = !in_quotes;
-
-                if (q[i] == '?' && !in_quotes) {
-                    q2 += u"@P" + to_u16string(param_num);
-                    param_num++;
-                } else
-                    q2 += q[i];
-            }
-
-            rpc r1(sess, u"sp_prepare", handle, create_params_string(params, conn.impl->coll.utf8), q2, 1); // 1 means return metadata
-
-            while (r1.fetch_row()) { }
-
-            cols = r1.cols;
-        } else {
-            rpc r1(sess, u"sp_prepare", handle, u"", q, 1); // 1 means return metadata
-
-            while (r1.fetch_row()) { }
-
-            cols = r1.cols;
-        }
-
-        if (handle.is_null)
-            throw runtime_error("sp_prepare failed.");
-
-        r2 = make_unique<rpc>(sess, u"sp_execute", static_cast<value>(handle), params);
+        r2 = do_query2(sess, q, params, handle, conn.impl->coll.utf8, cols);
     }
 
     uint16_t query::num_columns() const {
