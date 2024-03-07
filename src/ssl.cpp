@@ -688,7 +688,7 @@ namespace tds {
             buf[3].BufferType = SECBUFFER_EMPTY;
 
             bufdesc.ulVersion = SECBUFFER_VERSION;
-            bufdesc.cBuffers = buf.size();
+            bufdesc.cBuffers = (unsigned long)buf.size();
             bufdesc.pBuffers = buf.data();
 
             sec_status = DecryptMessage(&ctx_handle, &bufdesc, 0, nullptr);
