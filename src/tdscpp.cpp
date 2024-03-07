@@ -2710,10 +2710,10 @@ namespace tds {
                     lock_guard lg(mars_lock);
 
                     for (auto& sess_rw : mars_list) {
-                        auto& sess = sess_rw.get();
+                        auto& sess_ref = sess_rw.get();
 
-                        if (sess.sid == smp.sid) {
-                            sess.parse_message(stop, buf);
+                        if (sess_ref.sid == smp.sid) {
+                            sess_ref.parse_message(stop, buf);
                             break;
                         }
                     }
