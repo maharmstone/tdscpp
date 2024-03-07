@@ -2845,7 +2845,7 @@ namespace tds {
                     objs[0] = read_event.h.get();
                     objs[1] = mess_event.h.get();
 
-                    auto ret = WaitForMultipleObjects(objs.size(), objs.data(), false, INFINITE);
+                    auto ret = WaitForMultipleObjects((DWORD)objs.size(), objs.data(), false, INFINITE);
 
                     if (ret == WAIT_FAILED)
                         throw formatted_error("WaitForMultipleObjects failed (error {}).", GetLastError());
@@ -2894,7 +2894,7 @@ namespace tds {
             while (!stop.stop_requested()) {
                 WSANETWORKEVENTS netev;
 
-                auto ret = WaitForMultipleObjects(objs.size(), objs.data(), false, INFINITE);
+                auto ret = WaitForMultipleObjects((DWORD)objs.size(), objs.data(), false, INFINITE);
 
                 if (ret == WAIT_FAILED)
                     throw formatted_error("WaitForMultipleObjects failed (error {}).", GetLastError());
