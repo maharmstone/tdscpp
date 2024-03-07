@@ -1552,101 +1552,11 @@ namespace tds {
         }
     }
 
-    void tds::bcp_sendmsg(span<const uint8_t> data) {
-        if (impl->mars_sess)
-            impl->mars_sess->send_msg(tds_msg::bulk_load_data, data);
-        else
-            impl->sess.send_msg(tds_msg::bulk_load_data, data);
-
-        enum tds_msg type;
-        vector<uint8_t> payload;
-
-        if (impl->mars_sess)
-            impl->mars_sess->wait_for_msg(type, payload);
-        else
-            impl->sess.wait_for_msg(type, payload);
-
+    static void handle_bcp_msg(enum tds_msg type, span<const uint8_t> sp, tds_impl& impl) {
         // FIXME - timeout
 
         if (type != tds_msg::tabular_result)
             throw formatted_error("Received message type {}, expected tabular_result", (int)type);
-
-        span sp = payload;
-
-        while (!sp.empty()) {
-            auto type = (token)sp[0];
-            sp = sp.subspan(1);
-
-            // FIXME - parse unknowns according to numeric value of type
-
-            switch (type) {
-                case token::DONE:
-                case token::DONEINPROC:
-                case token::DONEPROC:
-                    if (sp.size() < sizeof(tds_done_msg))
-                        throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), sizeof(tds_done_msg));
-
-                    if (impl->count_handler) {
-                        auto msg = (tds_done_msg*)sp.data();
-
-                        if (msg->status & 0x10) // row count valid
-                            impl->count_handler(msg->rowcount, msg->curcmd);
-                    }
-
-                    sp = sp.subspan(sizeof(tds_done_msg));
-
-                    break;
-
-                case token::INFO:
-                case token::TDS_ERROR:
-                case token::ENVCHANGE:
-                {
-                    if (sp.size() < sizeof(uint16_t))
-                        throw formatted_error("Short {} message ({} bytes, expected at least 2).", type, sp.size());
-
-                    auto len = *(uint16_t*)&sp[0];
-
-                    sp = sp.subspan(sizeof(uint16_t));
-
-                    if (sp.size() < len)
-                        throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), len);
-
-                    if (type == token::INFO) {
-                        if (impl->message_handler)
-                            impl->handle_info_msg(sp.subspan(0, len), false);
-                    } else if (type == token::TDS_ERROR) {
-                        if (impl->message_handler)
-                            impl->handle_info_msg(sp.subspan(0, len), true);
-
-                        throw formatted_error("BCP failed: {}", utf16_to_utf8(extract_message(sp.subspan(0, len))));
-                    } else if (type == token::ENVCHANGE)
-                        impl->handle_envchange_msg(sp.subspan(0, len));
-
-                    sp = sp.subspan(len);
-
-                    break;
-                }
-
-                default:
-                    throw formatted_error("Unhandled token type {} in BCP response.", type);
-            }
-        }
-    }
-
-    void session::bcp_sendmsg(span<const uint8_t> data) {
-        impl->send_msg(tds_msg::bulk_load_data, data);
-
-        enum tds_msg type;
-        vector<uint8_t> payload;
-
-        impl->wait_for_msg(type, payload);
-
-        // FIXME - timeout
-
-        if (type != tds_msg::tabular_result)
-            throw formatted_error("Received message type {}, expected tabular_result", (int)type);
-
-        span sp = payload;
 
         while (!sp.empty()) {
             auto token_type = (token)sp[0];
@@ -1661,11 +1571,11 @@ namespace tds {
                     if (sp.size() < sizeof(tds_done_msg))
                         throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), sizeof(tds_done_msg));
 
-                    if (conn.impl->count_handler) {
-                        auto msg = (tds_done_msg*)sp.data();
+                    if (impl.count_handler) {
+                        auto& msg = *(tds_done_msg*)sp.data();
 
-                        if (msg->status & 0x10) // row count valid
-                            conn.impl->count_handler(msg->rowcount, msg->curcmd);
+                        if (msg.status & 0x10) // row count valid
+                            impl.count_handler(msg.rowcount, msg.curcmd);
                     }
 
                     sp = sp.subspan(sizeof(tds_done_msg));
@@ -1687,15 +1597,15 @@ namespace tds {
                         throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), len);
 
                     if (token_type == token::INFO) {
-                        if (conn.impl->message_handler)
-                            conn.impl->handle_info_msg(sp.subspan(0, len), false);
+                        if (impl.message_handler)
+                            impl.handle_info_msg(sp.subspan(0, len), false);
                     } else if (token_type == token::TDS_ERROR) {
-                        if (conn.impl->message_handler)
-                            conn.impl->handle_info_msg(sp.subspan(0, len), true);
+                        if (impl.message_handler)
+                            impl.handle_info_msg(sp.subspan(0, len), true);
 
                         throw formatted_error("BCP failed: {}", utf16_to_utf8(extract_message(sp.subspan(0, len))));
                     } else if (token_type == token::ENVCHANGE)
-                        conn.impl->handle_envchange_msg(sp.subspan(0, len));
+                        impl.handle_envchange_msg(sp.subspan(0, len));
 
                     sp = sp.subspan(len);
 
@@ -1706,6 +1616,34 @@ namespace tds {
                     throw formatted_error("Unhandled token type {} in BCP response.", token_type);
             }
         }
+    }
+
+    void tds::bcp_sendmsg(span<const uint8_t> data) {
+        if (impl->mars_sess)
+            impl->mars_sess->send_msg(tds_msg::bulk_load_data, data);
+        else
+            impl->sess.send_msg(tds_msg::bulk_load_data, data);
+
+        enum tds_msg type;
+        vector<uint8_t> payload;
+
+        if (impl->mars_sess)
+            impl->mars_sess->wait_for_msg(type, payload);
+        else
+            impl->sess.wait_for_msg(type, payload);
+
+        handle_bcp_msg(type, payload, *impl);
+    }
+
+    void session::bcp_sendmsg(span<const uint8_t> data) {
+        impl->send_msg(tds_msg::bulk_load_data, data);
+
+        enum tds_msg type;
+        vector<uint8_t> payload;
+
+        impl->wait_for_msg(type, payload);
+
+        handle_bcp_msg(type, payload, *conn.impl);
     }
 
     size_t bcp_colmetadata_size(const col_info& col) {
