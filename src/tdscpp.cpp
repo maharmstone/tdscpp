@@ -3347,7 +3347,7 @@ namespace tds {
 #endif
     }
 
-    void tds_impl::send_prelogin_msg(enum encryption_type encrypt, bool mars) {
+    void tds_impl::send_prelogin_msg(enum encryption_type encrypt, bool do_mars) {
         vector<uint8_t> msg;
         vector<login_opt> opts;
         login_opt_version lov;
@@ -3375,7 +3375,7 @@ namespace tds {
 
         // MARS
 
-        opts.emplace_back(tds_login_opt_type::mars, (uint8_t)(mars ? 1 : 0));
+        opts.emplace_back(tds_login_opt_type::mars, (uint8_t)(do_mars ? 1 : 0));
 
         size = (sizeof(tds_login_opt) * opts.size()) + sizeof(enum tds_login_opt_type);
         off = size;
@@ -3433,13 +3433,13 @@ namespace tds {
             if (tlo->type == tds_login_opt_type::terminator)
                 break;
 
-            auto off = htons(tlo->offset);
+            auto tlo_off = htons(tlo->offset);
             auto len = htons(tlo->length);
 
-            if (payload.size() < off + len)
+            if (payload.size() < tlo_off + len)
                 throw runtime_error("Malformed PRELOGIN response.");
 
-            auto pl = span(payload.data() + off, len);
+            auto pl = span(payload.data() + tlo_off, len);
 
             switch (tlo->type) {
                 case tds_login_opt_type::encryption:

@@ -655,7 +655,7 @@ namespace tds {
                  std::u16string_view db);
 
         void connect(const std::string& server, uint16_t port, bool get_fqdn);
-        void send_prelogin_msg(enum encryption_type encrypt, bool mars);
+        void send_prelogin_msg(enum encryption_type encrypt, bool do_mars);
         void send_login_msg(std::string_view user, std::string_view password, std::string_view server,
                             std::string_view app_name, std::string_view db, bool read_only_intent);
         void socket_thread(std::stop_token stop);
