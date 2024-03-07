@@ -3369,29 +3369,29 @@ namespace tds {
 
         unsigned int max_length2 = max_length;
         auto type2 = type;
-        span d = val;
+        span sp = val;
 
         if (type == sql_type::SQL_VARIANT) {
-            type2 = (sql_type)d[0];
+            type2 = (sql_type)sp[0];
 
-            d = d.subspan(1);
+            sp = sp.subspan(1);
 
-            auto propbytes = d[0];
+            auto propbytes = sp[0];
 
-            d = d.subspan(1);
+            sp = sp.subspan(1);
 
             switch (type2) {
                 case sql_type::TIME:
                 case sql_type::DATETIME2:
                 case sql_type::DATETIMEOFFSET:
-                    max_length2 = d[0];
+                    max_length2 = sp[0];
                     break;
 
                 default:
                     break;
             }
 
-            d = d.subspan(propbytes);
+            sp = sp.subspan(propbytes);
         }
 
         switch (type2) {
@@ -3422,7 +3422,7 @@ namespace tds {
             case sql_type::UDT: {
                 string ret = "0x";
 
-                for (auto b : d) {
+                for (auto b : sp) {
                     ret += format("{:02x}", b);
                 }
 
@@ -3466,7 +3466,7 @@ namespace tds {
                 auto dt = (datetime)*this;
                 chrono::hh_mm_ss hms(dt.t);
 
-                switch (d.size()) {
+                switch (sp.size()) {
                     case 4:
                         return format("'{:04}{:02}{:02} {:02}:{:02}'", (int)dt.d.year(), (unsigned int)dt.d.month(), (unsigned int)dt.d.day(),
                                                                             hms.hours().count(), hms.minutes().count());
@@ -3481,7 +3481,7 @@ namespace tds {
                     }
 
                     default:
-                        throw formatted_error("DATETIMN has invalid length {}.", d.size());
+                        throw formatted_error("DATETIMN has invalid length {}.", sp.size());
                 }
             }
 
