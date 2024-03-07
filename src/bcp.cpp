@@ -1825,21 +1825,21 @@ namespace tds {
                 *(uint16_t*)ptr = col.type != sql_type::XML ? (uint16_t)col.max_length : 0xffff;
                 ptr += sizeof(uint16_t);
 
-                auto c = (collation*)ptr;
+                auto& coll = *(collation*)ptr;
 
                 // collation seems to be ignored, depends on what INSERT BULK says
 
-                c->lcid = 0;
-                c->ignore_case = 0;
-                c->ignore_accent = 0;
-                c->ignore_width = 0;
-                c->ignore_kana = 0;
-                c->binary = 0;
-                c->binary2 = 0;
-                c->utf8 = 0;
-                c->reserved = 0;
-                c->version = 0;
-                c->sort_id = 0;
+                coll.lcid = 0;
+                coll.ignore_case = 0;
+                coll.ignore_accent = 0;
+                coll.ignore_width = 0;
+                coll.ignore_kana = 0;
+                coll.binary = 0;
+                coll.binary2 = 0;
+                coll.utf8 = 0;
+                coll.reserved = 0;
+                coll.version = 0;
+                coll.sort_id = 0;
 
                 ptr += sizeof(collation);
 
