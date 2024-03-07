@@ -2884,7 +2884,7 @@ namespace tds {
 
                 memcpy(&ticks, d.data(), min(sizeof(uint64_t), d.size() - 3));
 
-                for (unsigned int n = 0; n < 7 - max_length2; n++) {
+                for (unsigned int i = 0; i < 7 - max_length2; i++) {
                     ticks *= 10;
                 }
 
@@ -2899,7 +2899,7 @@ namespace tds {
 
                 memcpy(&ticks, d.data(), min(sizeof(uint64_t), d.size() - 5));
 
-                for (unsigned int n = 0; n < 7 - max_length2; n++) {
+                for (unsigned int i = 0; i < 7 - max_length2; i++) {
                     ticks *= 10;
                 }
 
