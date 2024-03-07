@@ -1758,25 +1758,25 @@ namespace tds {
     }
 
     void bcp_colmetadata_data(uint8_t*& ptr, const col_info& col, u16string_view name) {
-        auto c = (tds_colmetadata_col*)ptr;
+        auto& c = *(tds_colmetadata_col*)ptr;
 
-        c->user_type = 0;
-        c->flags = 8; // read/write
+        c.user_type = 0;
+        c.flags = 8; // read/write
 
         if (col.nullable)
-            c->flags |= 1;
+            c.flags |= 1;
 
         switch (col.type) {
             case sql_type::XML:
-                c->type = sql_type::NVARCHAR;
+                c.type = sql_type::NVARCHAR;
                 break;
 
             case sql_type::UDT:
-                c->type = sql_type::VARBINARY;
+                c.type = sql_type::VARBINARY;
                 break;
 
             default:
-                c->type = col.type;
+                c.type = col.type;
                 break;
         }
 
