@@ -1538,25 +1538,25 @@ namespace tds {
     class TDSCPP query {
     public:
         query(tds& tds, std::type_identity_t<checker<char, 0>> q) : conn(tds) {
-            do_query(conn, cp_to_utf16(q.sv, tds.codepage));
+            do_query(cp_to_utf16(q.sv, tds.codepage));
         }
 
         query(tds& tds, std::type_identity_t<checker<char8_t, 0>> q) : conn(tds) {
-            do_query(conn, utf8_to_utf16(q.sv));
+            do_query(utf8_to_utf16(q.sv));
         }
 
         query(tds& tds, std::type_identity_t<checker<char16_t, 0>> q) : conn(tds) {
-            do_query(conn, q.sv);
+            do_query(q.sv);
         }
 
         template<typename T>
         query(tds& tds, no_check<T> q) : conn(tds) {
             if constexpr (std::is_same_v<T, char>)
-                do_query(conn, cp_to_utf16(q.sv, tds.codepage));
+                do_query(cp_to_utf16(q.sv, tds.codepage));
             else if constexpr (std::is_same_v<T, char8_t>)
-                do_query(conn, utf8_to_utf16(q.sv));
+                do_query(utf8_to_utf16(q.sv));
             else
-                do_query(conn, q.sv);
+                do_query(q.sv);
         }
 
         template<typename... Args>
@@ -1565,7 +1565,7 @@ namespace tds {
 
             add_param(args...);
 
-            do_query(conn, cp_to_utf16(q.sv, tds.codepage));
+            do_query(cp_to_utf16(q.sv, tds.codepage));
         }
 
         template<typename... Args>
@@ -1574,7 +1574,7 @@ namespace tds {
 
             add_param(args...);
 
-            do_query(conn, utf8_to_utf16(q.sv));
+            do_query(utf8_to_utf16(q.sv));
         }
 
         template<typename... Args>
@@ -1583,7 +1583,7 @@ namespace tds {
 
             add_param(args...);
 
-            do_query(conn, q.sv);
+            do_query(q.sv);
         }
 
         template<typename T, typename... Args>
@@ -1593,11 +1593,11 @@ namespace tds {
             add_param(args...);
 
             if constexpr (std::is_same_v<T, char>)
-                do_query(conn, cp_to_utf16(q.sv, tds.codepage));
+                do_query(cp_to_utf16(q.sv, tds.codepage));
             else if constexpr (std::is_same_v<T, char8_t>)
-                do_query(conn, utf8_to_utf16(q.sv));
+                do_query(utf8_to_utf16(q.sv));
             else
-                do_query(conn, q.sv);
+                do_query(q.sv);
         }
 
         query(session& sess, std::type_identity_t<checker<char, 0>> q) : conn(sess.conn) {
@@ -1676,7 +1676,7 @@ namespace tds {
         bool fetch_row_no_wait();
 
     private:
-        void do_query(tds& conn, std::u16string_view q);
+        void do_query(std::u16string_view q);
         void do_query(session& sess, std::u16string_view q);
 
         template<typename T, typename... Args>

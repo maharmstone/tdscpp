@@ -3960,14 +3960,14 @@ namespace tds {
     }
 
     // FIXME - can we do static assert if no. of question marks different from no. of parameters?
-    void query::do_query(tds& conn, u16string_view q) {
+    void query::do_query(u16string_view q) {
         r2 = do_query2(conn, q, params, handle, conn.impl->coll.utf8, cols);
     }
 
-    void query::do_query(session& sess, u16string_view q) {
-        this->sess = sess;
+    void query::do_query(session& sess2, u16string_view q) {
+        this->sess = sess2;
 
-        r2 = do_query2(sess, q, params, handle, conn.impl->coll.utf8, cols);
+        r2 = do_query2(sess2, q, params, handle, conn.impl->coll.utf8, cols);
     }
 
     uint16_t query::num_columns() const {
