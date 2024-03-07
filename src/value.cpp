@@ -3243,7 +3243,7 @@ namespace tds {
 
                 memcpy(&secs, d.data(), min(sizeof(uint64_t), d.size() - 3));
 
-                for (auto n = max_length2; n > 0; n--) {
+                for (auto l = max_length2; l > 0; l--) {
                     secs /= 10;
                 }
 
@@ -3258,7 +3258,7 @@ namespace tds {
 
                 memcpy(&secs, d.data(), min(sizeof(uint64_t), d.size() - 5));
 
-                for (auto n = max_length2; n > 0; n--) {
+                for (auto l = max_length2; l > 0; l--) {
                     secs /= 10;
                 }
 
