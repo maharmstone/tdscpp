@@ -1649,17 +1649,17 @@ namespace tds {
         span sp = payload;
 
         while (!sp.empty()) {
-            auto type = (token)sp[0];
+            auto token_type = (token)sp[0];
             sp = sp.subspan(1);
 
             // FIXME - parse unknowns according to numeric value of type
 
-            switch (type) {
+            switch (token_type) {
                 case token::DONE:
                 case token::DONEINPROC:
                 case token::DONEPROC:
                     if (sp.size() < sizeof(tds_done_msg))
-                        throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), sizeof(tds_done_msg));
+                        throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), sizeof(tds_done_msg));
 
                     if (conn.impl->count_handler) {
                         auto msg = (tds_done_msg*)sp.data();
@@ -1677,24 +1677,24 @@ namespace tds {
                 case token::ENVCHANGE:
                 {
                     if (sp.size() < sizeof(uint16_t))
-                        throw formatted_error("Short {} message ({} bytes, expected at least 2).", type, sp.size());
+                        throw formatted_error("Short {} message ({} bytes, expected at least 2).", token_type, sp.size());
 
                     auto len = *(uint16_t*)&sp[0];
 
                     sp = sp.subspan(sizeof(uint16_t));
 
                     if (sp.size() < len)
-                        throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), len);
+                        throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), len);
 
-                    if (type == token::INFO) {
+                    if (token_type == token::INFO) {
                         if (conn.impl->message_handler)
                             conn.impl->handle_info_msg(sp.subspan(0, len), false);
-                    } else if (type == token::TDS_ERROR) {
+                    } else if (token_type == token::TDS_ERROR) {
                         if (conn.impl->message_handler)
                             conn.impl->handle_info_msg(sp.subspan(0, len), true);
 
                         throw formatted_error("BCP failed: {}", utf16_to_utf8(extract_message(sp.subspan(0, len))));
-                    } else if (type == token::ENVCHANGE)
+                    } else if (token_type == token::ENVCHANGE)
                         conn.impl->handle_envchange_msg(sp.subspan(0, len));
 
                     sp = sp.subspan(len);
@@ -1703,7 +1703,7 @@ namespace tds {
                 }
 
                 default:
-                    throw formatted_error("Unhandled token type {} in BCP response.", type);
+                    throw formatted_error("Unhandled token type {} in BCP response.", token_type);
             }
         }
     }
