@@ -650,7 +650,7 @@ namespace tds {
         memcpy(buf[1].pvBuffer, sp.data(), sp.size());
 
         bufdesc.ulVersion = SECBUFFER_VERSION;
-        bufdesc.cBuffers = buf.size();
+        bufdesc.cBuffers = (unsigned long)buf.size();
         bufdesc.pBuffers = buf.data();
 
         sec_status = EncryptMessage(&ctx_handle, 0, &bufdesc, 0);
