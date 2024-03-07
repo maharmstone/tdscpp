@@ -367,9 +367,9 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
         uint32_t num;
 
         {
-            auto [ptr, ec] = from_chars(s.data(), s.data() + min(s.length(), (size_t)8), num);
+            auto fcr = from_chars(s.data(), s.data() + min(s.length(), (size_t)8), num);
 
-            if (s.length() >= 8 && ptr == s.data() + 8) { // yyyymmdd
+            if (s.length() >= 8 && fcr.ptr == s.data() + 8) { // yyyymmdd
                 y = (uint16_t)(num / 10000);
                 m = (uint8_t)((num % 10000) / 100);
                 d = (uint8_t)(num % 100);
@@ -377,7 +377,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
                 s = s.substr(8);
                 s2 = s;
                 return true;
-            } else if (s.length() >= 6 && ptr == s.data() + 6) { // yyyymm[\\-/]dd
+            } else if (s.length() >= 6 && fcr.ptr == s.data() + 6) { // yyyymm[\\-/]dd
                 s = s.substr(6);
 
                 if (!s.empty() && (s.front() == '-' || s.front() == '/'))
@@ -400,7 +400,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
 
                 s2 = s;
                 return true;
-            } else if (s.length() >= 4 && ptr == s.data() + 4) { // yyyy[\\-/]mm[\\-/]dd
+            } else if (s.length() >= 4 && fcr.ptr == s.data() + 4) { // yyyy[\\-/]mm[\\-/]dd
                 s = s.substr(4);
 
                 if (!s.empty() && (s.front() == '-' || s.front() == '/'))
@@ -438,10 +438,10 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
                 s2 = s;
 
                 return true;
-            } else if (s.length() < 2 || (ptr != s.data() + 1 && ptr != s.data() + 2))
+            } else if (s.length() < 2 || (fcr.ptr != s.data() + 1 && fcr.ptr != s.data() + 2))
                 return false;
 
-            s = s.substr((size_t)(ptr - s.data()));
+            s = s.substr((size_t)(fcr.ptr - s.data()));
         }
 
         d = (uint8_t)num;
