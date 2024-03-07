@@ -2597,14 +2597,14 @@ namespace tds {
             lock_guard lg(mars_lock);
 
             for (auto& sess_rw : mars_list) {
-                auto& sess = sess_rw.get();
+                auto& sess_ref = sess_rw.get();
 
                 {
-                    lock_guard lg(sess.mess_in_lock);
-                    sess.socket_thread_exc = current_exception();
+                    lock_guard lg2(sess_ref.mess_in_lock);
+                    sess_ref.socket_thread_exc = current_exception();
                 }
 
-                sess.mess_in_cv.notify_all();
+                sess_ref.mess_in_cv.notify_all();
             }
         }
     }
