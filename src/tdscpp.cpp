@@ -3895,6 +3895,29 @@ namespace tds {
         return p;
     }
 
+    static u16string create_params_string(span<const value> params, bool conn_utf8) {
+        unsigned int num = 1;
+        u16string s;
+
+        for (const auto& p : params) {
+            if (!s.empty())
+                s += u", ";
+
+            s += u"@P" + to_u16string(num) + u" ";
+
+            if (p.type == sql_type::VARCHAR && p.coll.utf8 && !conn_utf8) {
+                auto s_len = utf8_to_utf16_len(string_view{(char*)p.val.data(), p.val.size()});
+
+                s += type_to_string(sql_type::NVARCHAR, s_len * sizeof(char16_t), 0, 0, u"", u"");
+            } else
+                s += type_to_string(p.type, p.val.size(), p.precision, p.scale, u"", p.clr_name);
+
+            num++;
+        }
+
+        return s;
+    }
+
     // FIXME - can we do static assert if no. of question marks different from no. of parameters?
     void query::do_query(tds& conn, u16string_view q) {
         if (!params.empty()) {
@@ -3917,7 +3940,7 @@ namespace tds {
                     q2 += q[i];
             }
 
-            rpc r1(conn, u"sp_prepare", handle, create_params_string(), q2, 1); // 1 means return metadata
+            rpc r1(conn, u"sp_prepare", handle, create_params_string(params, conn.impl->coll.utf8), q2, 1); // 1 means return metadata
 
             while (r1.fetch_row()) { }
 
@@ -3959,7 +3982,7 @@ namespace tds {
                     q2 += q[i];
             }
 
-            rpc r1(sess, u"sp_prepare", handle, create_params_string(), q2, 1); // 1 means return metadata
+            rpc r1(sess, u"sp_prepare", handle, create_params_string(params, conn.impl->coll.utf8), q2, 1); // 1 means return metadata
 
             while (r1.fetch_row()) { }
 
@@ -4210,29 +4233,6 @@ namespace tds {
             default:
                 throw formatted_error("Could not get type string for {}.", type);
         }
-    }
-
-    u16string query::create_params_string() {
-        unsigned int num = 1;
-        u16string s;
-
-        for (const auto& p : params) {
-            if (!s.empty())
-                s += u", ";
-
-            s += u"@P" + to_u16string(num) + u" ";
-
-            if (p.type == sql_type::VARCHAR && p.coll.utf8 && !conn.impl->coll.utf8) {
-                auto s_len = utf8_to_utf16_len(string_view{(char*)p.val.data(), p.val.size()});
-
-                s += type_to_string(sql_type::NVARCHAR, s_len * sizeof(char16_t), 0, 0, u"", u"");
-            } else
-                s += type_to_string(p.type, p.val.size(), p.precision, p.scale, u"", p.clr_name);
-
-            num++;
-        }
-
-        return s;
     }
 
     map<u16string, col_info> get_col_info(tds_or_session auto& n, u16string_view table, u16string_view db) {

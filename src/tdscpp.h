@@ -1720,8 +1720,6 @@ namespace tds {
                 params.emplace_back(v.value());
         }
 
-        std::u16string create_params_string();
-
         tds& conn;
         std::vector<value> params;
         std::vector<column> cols;
