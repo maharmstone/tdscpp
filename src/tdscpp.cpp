@@ -3290,8 +3290,6 @@ namespace tds {
 #endif
 
         do {
-            char hostname[NI_MAXHOST];
-
             sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 
 #ifdef _WIN32
@@ -3329,8 +3327,10 @@ namespace tds {
             }
 
             if (get_fqdn) {
-                if (getnameinfo(res->ai_addr, (socklen_t)res->ai_addrlen, hostname, sizeof(hostname), nullptr, 0, 0) == 0)
-                    fqdn = hostname;
+                char gni_hostname[NI_MAXHOST];
+
+                if (getnameinfo(res->ai_addr, (socklen_t)res->ai_addrlen, gni_hostname, sizeof(gni_hostname), nullptr, 0, 0) == 0)
+                    fqdn = gni_hostname;
             }
 
             break;
