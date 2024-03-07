@@ -3646,22 +3646,22 @@ namespace tds {
 
                 received_loginack = false;
 
-                vector<uint8_t> t;
+                vector<uint8_t> t2;
 
                 while (!tokens.empty()) {
-                    t.swap(tokens.front());
+                    t2.swap(tokens.front());
                     tokens.pop_front();
 
-                    auto type = (token)t[0];
+                    auto token_type = (token)t2[0];
 
-                    auto sp = span<const uint8_t>(t).subspan(1);
+                    auto sp = span<const uint8_t>(t2).subspan(1);
 
-                    switch (type) {
+                    switch (token_type) {
                         case token::DONE:
                         case token::DONEINPROC:
                         case token::DONEPROC:
                             if (sp.size() < sizeof(tds_done_msg))
-                                throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), sizeof(tds_done_msg));
+                                throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), sizeof(tds_done_msg));
 
                             break;
 
@@ -3671,27 +3671,27 @@ namespace tds {
                         case token::ENVCHANGE:
                         {
                             if (sp.size() < sizeof(uint16_t))
-                                throw formatted_error("Short {} message ({} bytes, expected at least 2).", type, sp.size());
+                                throw formatted_error("Short {} message ({} bytes, expected at least 2).", token_type, sp.size());
 
                             auto len = *(uint16_t*)&sp[0];
 
                             sp = sp.subspan(sizeof(uint16_t));
 
                             if (sp.size() < len)
-                                throw formatted_error("Short {} message ({} bytes, expected {}).", type, sp.size(), len);
+                                throw formatted_error("Short {} message ({} bytes, expected {}).", token_type, sp.size(), len);
 
-                            if (type == token::LOGINACK) {
+                            if (token_type == token::LOGINACK) {
                                 handle_loginack_msg(sp.subspan(0, len));
                                 received_loginack = true;
-                            } else if (type == token::INFO) {
+                            } else if (token_type == token::INFO) {
                                 if (message_handler)
                                     handle_info_msg(sp.subspan(0, len), false);
-                            } else if (type == token::TDS_ERROR) {
+                            } else if (token_type == token::TDS_ERROR) {
                                 if (message_handler)
                                     handle_info_msg(sp.subspan(0, len), true);
 
                                 throw formatted_error("Login failed: {}", utf16_to_utf8(extract_message(sp.subspan(0, len))));
-                            } else if (type == token::ENVCHANGE)
+                            } else if (token_type == token::ENVCHANGE)
                                 handle_envchange_msg(sp.subspan(0, len));
 
                             break;
@@ -3701,14 +3701,14 @@ namespace tds {
                         case token::SSPI: // FIXME - handle doing this with GSSAPI
                         {
                             if (sp.size() < sizeof(uint16_t))
-                                throw formatted_error("Short {} message ({} bytes, expected at least 2).", type, sp.size());
+                                throw formatted_error("Short {} message ({} bytes, expected at least 2).", token_type, sp.size());
 
                             auto len = *(uint16_t*)&sp[0];
 
                             sp = sp.subspan(sizeof(uint16_t));
 
                             if (sp.size() < len)
-                                throw formatted_error("Short SSPI token ({} bytes, expected {}).", type, sp.size(), len);
+                                throw formatted_error("Short SSPI token ({} bytes, expected {}).", token_type, sp.size(), len);
 
                             if (!sspih)
                                 throw runtime_error("SSPI token received, but no current SSPI context.");
