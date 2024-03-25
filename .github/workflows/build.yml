@@ -1,0 +1,26 @@
+name: build x86_64-pc-windows-msvc
+on: [push]
+env:
+   PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/etc/eselect/wine/bin
+jobs:
+  x86_64-pc-windows-msvc:
+    runs-on: msvc-wine
+    steps:
+      - run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
+      - run: git clone ${{ github.server_url }}/${{ github.repository }} ${SHORT_SHA}
+      - run: cd ${SHORT_SHA} && git checkout ${{ github.sha }}
+      - run: mkdir -p build/debug
+      - run: mkdir -p build/release
+      - run: mkdir nlohmann-json && cd nlohmann-json && wget -qO- https://www.burntcomma.com/nlohmann-json-3.11.2-x86_64-pc-windows-msvc.tar.gz | tar -xz
+      - run: cmake -DCMAKE_TOOLCHAIN_FILE=msvc-amd64.cmake -DCMAKE_FIND_ROOT_PATH=${PWD}/nlohmann-json -DCMAKE_BUILD_TYPE=Debug -S ${SHORT_SHA} -B build/debug && cmake --build build/debug --parallel `nproc`
+      - run: cmake -DCMAKE_TOOLCHAIN_FILE=msvc-amd64.cmake -DCMAKE_FIND_ROOT_PATH=${PWD}/nlohmann-json -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ${SHORT_SHA} -B build/release && cmake --build build/release --parallel `nproc`
+      - run: cp ${SHORT_SHA}/src/tdscpp.h build/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.sha }}
+          overwrite: true
+          path: |
+            build/tdscpp.h
+            build/**/tdscpp.dll
+            build/**/tdscpp.pdb
+            build/**/tdscpp.lib
