@@ -1,0 +1,23 @@
+name: build x86_64-pc-linux-gnu
+on: [push]
+jobs:
+  x86_64-pc-linux-gnu:
+    runs-on: ubuntu-rolling
+    steps:
+      - run: apt-get update
+      - run: apt-get install -y g++ git cmake nlohmann-json3-dev libicu-dev nodejs
+      - run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
+      - run: git clone ${{ github.server_url }}/${{ github.repository }} ${SHORT_SHA}
+      - run: cd ${SHORT_SHA} && git checkout ${{ github.sha }}
+      - run: mkdir -p build/debug
+      - run: mkdir -p build/release
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug -S ${SHORT_SHA} -B build/debug && cmake --build build/debug --parallel `nproc`
+      - run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ${SHORT_SHA} -B build/release && cmake --build build/release --parallel `nproc`
+      - run: cp ${SHORT_SHA}/src/tdscpp.h build/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.sha }}
+          overwrite: true
+          path: |
+            build/tdscpp.h
+            build/**/libtdscpp.so
