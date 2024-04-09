@@ -922,7 +922,7 @@ namespace tds {
 
     collation::collation(std::string_view s) {
         static const struct {
-            string_view name;
+            const char* name;
             uint32_t lcid;
             bool ignore_case;
             bool ignore_accent;
