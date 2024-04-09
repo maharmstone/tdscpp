@@ -2048,8 +2048,16 @@ static void name_thread(string_view name) {
 
     unique_handle h{open(fn.c_str(), O_WRONLY)};
 
-    if (h.get() > 0)
+    if (h.get() > 0) {
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-result" // it doesn't matter if this fails
+#endif
         write(h.get(), name.data(), name.size());
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+    }
 #endif
 }
 
