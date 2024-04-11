@@ -119,6 +119,10 @@ install(TARGETS tdscpp
 
 install(EXPORT tdscpp-targets DESTINATION lib/cmake/tdscpp)
 
+if(MSVC)
+    install(FILES $<TARGET_PDB_FILE:tdscpp> DESTINATION bin OPTIONAL)
+endif()
+
 configure_package_config_file(
     "tdscppConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/tdscppConfig.cmake"
     INSTALL_DESTINATION "lib/cmake/tdscpp"
@@ -137,4 +141,10 @@ if(BUILD_SAMPLE)
 
     add_executable(colltest src/colltest.cpp)
     target_link_libraries(colltest tdscpp)
+    install(TARGETS colltest DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+    if(MSVC)
+        install(FILES $<TARGET_PDB_FILE:tdscpp-test> DESTINATION bin OPTIONAL)
+        install(FILES $<TARGET_PDB_FILE:colltest> DESTINATION bin OPTIONAL)
+    endif()
 endif()
