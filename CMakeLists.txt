@@ -92,10 +92,14 @@ if(NOT MSVC)
     endif()
 endif()
 
-
 if(NOT MSVC)
 	target_compile_options(tdscpp PUBLIC -Wall -Werror=cast-function-type -Wno-expansion-to-defined -Wunused-parameter -Wtype-limits -Wextra -Wconversion -fstrict-aliasing)
 endif()
+
+target_include_directories(tdscpp PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 if(WIN32)
     if(ONECORE)
