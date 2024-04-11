@@ -9,15 +9,14 @@ jobs:
       - run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
       - run: git clone ${{ github.server_url }}/${{ github.repository }} ${SHORT_SHA}
       - run: cd ${SHORT_SHA} && git checkout ${{ github.sha }}
-      - run: mkdir -p build/debug
-      - run: mkdir -p build/release
-      - run: cmake -DCMAKE_BUILD_TYPE=Debug -S ${SHORT_SHA} -B build/debug && cmake --build build/debug --parallel `nproc`
-      - run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ${SHORT_SHA} -B build/release && cmake --build build/release --parallel `nproc`
-      - run: cp ${SHORT_SHA}/src/tdscpp.h build/
+      - run: mkdir -p build/debug-work
+      - run: mkdir -p build/release-work
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=${PWD}/build/debug -S ${SHORT_SHA} -B build/debug-work && cmake --build build/debug-work --parallel `nproc` && cmake --install build/debug-work
+      - run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=${PWD}/build/release -S ${SHORT_SHA} -B build/release-work && cmake --build build/release-work --parallel `nproc` && cmake --install build/release-work
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ github.sha }}
           overwrite: true
           path: |
-            build/tdscpp.h
-            build/**/libtdscpp.so
+            build/debug
+            build/release
