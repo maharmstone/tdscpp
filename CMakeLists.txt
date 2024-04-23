@@ -152,3 +152,8 @@ if(BUILD_SAMPLE)
         install(FILES $<TARGET_PDB_FILE:colltest> DESTINATION bin OPTIONAL)
     endif()
 endif()
+
+set(CPACK_PACKAGE_NAME tdscpp-dev)
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Mark Harmstone")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libicu-dev, nlohmann-json3-dev")
+include(CPack)
