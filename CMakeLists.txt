@@ -155,5 +155,5 @@ endif()
 
 set(CPACK_PACKAGE_NAME tdscpp-dev)
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Mark Harmstone")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libicu-dev, nlohmann-json3-dev")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libicu-dev, nlohmann-json3-dev, libssl-dev")
 include(CPack)
