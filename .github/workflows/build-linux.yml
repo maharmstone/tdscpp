@@ -35,10 +35,16 @@ jobs:
           cpack --config release-work/CPackConfig.cmake \
             -G DEB \
             -B package && \
-          mv package/*.deb install/
+          mv package/*.deb .
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ github.sha }}
           overwrite: true
           path: |
             install
+      - uses: actions/upload-artifact@v3
+        with:
+          name: deb
+          overwrite: true
+          path: |
+            ./*.deb
