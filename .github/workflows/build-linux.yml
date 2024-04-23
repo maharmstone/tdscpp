@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-rolling
     steps:
       - run: apt-get update
-      - run: apt-get install -y g++ git cmake nlohmann-json3-dev libicu-dev nodejs libssl-dev
+      - run: apt-get install -y g++ git cmake nlohmann-json3-dev libicu-dev nodejs libssl-dev libkrb5-dev
       - run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
       - run: git clone ${{ github.server_url }}/${{ github.repository }} ${SHORT_SHA}
       - run: cd ${SHORT_SHA} && git checkout ${{ github.sha }}
@@ -15,14 +15,14 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_INSTALL_PREFIX=${PWD}/install/debug \
             -DCMAKE_INSTALL_INCLUDEDIR=../include \
-            -DWITH_OPENSSL=ON \
+            -DWITH_OPENSSL=ON -DENABLE_KRB5=ON \
             -S ${SHORT_SHA} -B debug-work && \
           cmake --build debug-work --parallel `nproc` && \
           cmake --install debug-work
       - run: |
           cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
             -DCMAKE_INSTALL_PREFIX=${PWD}/install \
-            -DWITH_OPENSSL=ON \
+            -DWITH_OPENSSL=ON -DENABLE_KRB5=ON \
             -S ${SHORT_SHA} -B release-work && \
           cmake --build release-work --parallel `nproc` && \
           cmake --install release-work
