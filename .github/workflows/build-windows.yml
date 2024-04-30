@@ -11,7 +11,7 @@ jobs:
       - run: cd ${SHORT_SHA} && git checkout ${{ github.sha }}
       - run: mkdir -p debug-work
       - run: mkdir -p release-work
-      - run: mkdir nlohmann-json && cd nlohmann-json && wget -qO- https://www.burntcomma.com/nlohmann-json-3.11.2-x86_64-pc-windows-msvc.tar.gz | tar -xz
+      - run: mkdir nlohmann-json && cd nlohmann-json && wget -qO- https://www.burntcomma.com/packages/nlohmann-json-3.11.3-x86_64-pc-windows-msvc.tar.gz | tar -xz
       - run: |
           cmake -DCMAKE_TOOLCHAIN_FILE=msvc-amd64.cmake \
             -DCMAKE_FIND_ROOT_PATH=${PWD}/nlohmann-json \
