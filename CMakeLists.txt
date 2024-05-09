@@ -84,7 +84,6 @@ if(WIN32)
 endif()
 
 if(NOT MSVC)
-    target_compile_options(tdscpp PUBLIC -fno-rtti)
     target_link_options(tdscpp PUBLIC -static-libgcc -static-libstdc++)
 
     if(ONECORE)
