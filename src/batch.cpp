@@ -95,6 +95,7 @@ namespace tds {
             while (!ack) {
                 enum tds_msg type;
                 vector<uint8_t> payload;
+                uint64_t varchar_left;
 
                 if (sess)
                     sess.value().get().wait_for_msg(type, payload);
@@ -108,7 +109,7 @@ namespace tds {
                 if (type != tds_msg::tabular_result)
                     continue;
 
-                parse_tokens(payload, tokens, buf_columns);
+                parse_tokens(payload, tokens, buf_columns, varchar_left);
 
                 vector<uint8_t> t;
 
@@ -142,6 +143,7 @@ namespace tds {
         enum tds_msg type;
         vector<uint8_t> payload;
         bool last_packet;
+        uint64_t varchar_left;
 
         if (sess)
             sess.value().get().wait_for_msg(type, payload, &last_packet);
@@ -158,7 +160,7 @@ namespace tds {
         buf.insert(buf.end(), payload.begin(), payload.end());
 
         {
-            auto sp = parse_tokens(buf, tokens, buf_columns);
+            auto sp = parse_tokens(buf, tokens, buf_columns, varchar_left);
 
             if (sp.size() != buf.size()) {
                 vector<uint8_t> newbuf{sp.begin(), sp.end()};

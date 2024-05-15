@@ -1545,7 +1545,7 @@ static constexpr bool is_byte_len_type(enum tds::sql_type type) noexcept {
 
 // tdscpp.cpp
 std::span<const uint8_t> parse_tokens(std::span<const uint8_t> sp, std::list<std::vector<uint8_t>>& tokens,
-                                      std::vector<tds::column>& buf_columns);
+                                      std::vector<tds::column>& buf_columns, uint64_t& varchar_left);
 void handle_row_col(tds::value_data_t& val, bool& is_null, enum tds::sql_type type,
                     unsigned int max_length, std::span<const uint8_t>& sp);
 void handle_nbcrow(std::span<const uint8_t>& sp, const std::vector<tds::column>& cols,

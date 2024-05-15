@@ -63,7 +63,8 @@ using namespace std;
 
 static const uint32_t tds_74_version = 0x4000074;
 
-static bool parse_row_col(enum tds::sql_type type, unsigned int max_length, span<const uint8_t>& sp) {
+static bool parse_row_col(enum tds::sql_type type, unsigned int max_length, span<const uint8_t>& sp,
+                          uint64_t& varchar_left) {
     switch (type) {
         case tds::sql_type::TINYINT:
         case tds::sql_type::BIT:
@@ -154,9 +155,15 @@ static bool parse_row_col(enum tds::sql_type type, unsigned int max_length, span
                 if (len == 0xffffffffffffffff)
                     return true;
 
+                uint64_t so_far = 0;
+
                 do {
-                    if (sp.size() < sizeof(uint32_t))
+                    if (sp.size() < sizeof(uint32_t)) {
+                        if (len != 0xfffffffffffffffe)
+                            varchar_left = len - so_far;
+
                         return false;
+                    }
 
                     auto chunk_len = *(uint32_t*)sp.data();
 
@@ -165,10 +172,15 @@ static bool parse_row_col(enum tds::sql_type type, unsigned int max_length, span
                     if (chunk_len == 0)
                         break;
 
-                    if (sp.size() < chunk_len)
+                    if (sp.size() < chunk_len) {
+                        if (len != 0xfffffffffffffffe)
+                            varchar_left = len - so_far;
+
                         return false;
+                    }
 
                     sp = sp.subspan(chunk_len);
+                    so_far += chunk_len;
                 } while (true);
             } else {
                 if (sp.size() < sizeof(uint16_t))
@@ -260,7 +272,10 @@ static bool parse_row_col(enum tds::sql_type type, unsigned int max_length, span
     return true;
 }
 
-span<const uint8_t> parse_tokens(span<const uint8_t> sp, list<vector<uint8_t>>& tokens, vector<tds::column>& buf_columns) {
+span<const uint8_t> parse_tokens(span<const uint8_t> sp, list<vector<uint8_t>>& tokens, vector<tds::column>& buf_columns,
+                                 uint64_t& varchar_left) {
+    varchar_left = 0;
+
     while (!sp.empty()) {
         auto type = (tds::token)sp[0];
 
@@ -549,7 +564,7 @@ span<const uint8_t> parse_tokens(span<const uint8_t> sp, list<vector<uint8_t>>& 
                 auto sp2 = sp.subspan(1);
 
                 for (unsigned int i = 0; i < buf_columns.size(); i++) {
-                    if (!parse_row_col(buf_columns[i].type, buf_columns[i].max_length, sp2))
+                    if (!parse_row_col(buf_columns[i].type, buf_columns[i].max_length, sp2, varchar_left))
                         return sp;
                 }
 
@@ -588,7 +603,7 @@ span<const uint8_t> parse_tokens(span<const uint8_t> sp, list<vector<uint8_t>>& 
                     }
 
                     if (!(bsv & 1)) { // not NULL
-                        if (!parse_row_col(buf_columns[i].type, buf_columns[i].max_length, sp2))
+                        if (!parse_row_col(buf_columns[i].type, buf_columns[i].max_length, sp2, varchar_left))
                             return sp;
                     }
                 }
@@ -3641,7 +3656,8 @@ namespace tds {
                 buf.insert(buf.end(), payload.begin(), payload.end());
 
                 {
-                    auto sp = parse_tokens(buf, tokens, buf_columns);
+                    uint64_t varchar_left;
+                    auto sp = parse_tokens(buf, tokens, buf_columns, varchar_left);
 
                     if (sp.size() != buf.size()) {
                         vector<uint8_t> newbuf{sp.begin(), sp.end()};
