@@ -618,36 +618,45 @@ namespace tds {
     }
 
     void rpc::wait_for_packet() {
-        enum tds_msg type;
-        vector<uint8_t> payload;
         bool last_packet;
         uint64_t varchar_left;
 
-        if (sess)
-            sess->get().wait_for_msg(type, payload, &last_packet);
-        else if (conn.impl->mars_sess)
-            conn.impl->mars_sess->wait_for_msg(type, payload, &last_packet);
-        else
-            conn.impl->sess.wait_for_msg(type, payload, &last_packet);
+        do {
+            enum tds_msg type;
+            vector<uint8_t> payload;
 
-        // FIXME - timeout
+            if (sess)
+                sess->get().wait_for_msg(type, payload, &last_packet);
+            else if (conn.impl->mars_sess)
+                conn.impl->mars_sess->wait_for_msg(type, payload, &last_packet);
+            else
+                conn.impl->sess.wait_for_msg(type, payload, &last_packet);
 
-        if (type != tds_msg::tabular_result)
-            throw formatted_error("Received message type {}, expected tabular_result", (int)type);
+            // FIXME - timeout
 
-        buf.insert(buf.end(), payload.begin(), payload.end());
+            if (type != tds_msg::tabular_result)
+                throw formatted_error("Received message type {}, expected tabular_result", (int)type);
 
-        {
-            auto sp = parse_tokens(buf, tokens, buf_columns, varchar_left);
+            buf.insert(buf.end(), payload.begin(), payload.end());
 
-            if (sp.size() != buf.size()) {
-                vector<uint8_t> newbuf{sp.begin(), sp.end()};
-                buf.swap(newbuf);
+            // don't go through existing data if still in the middle of a VARCHAR(MAX)
+            if (tokens.empty() && !last_packet && payload.size() >= sizeof(uint32_t) && varchar_left > payload.size() - sizeof(uint32_t)) {
+                varchar_left -= payload.size() - sizeof(uint32_t);
+                continue;
             }
-        }
 
-        if (last_packet && !buf.empty())
-            throw formatted_error("Data remaining in buffer");
+            {
+                auto sp = parse_tokens(buf, tokens, buf_columns, varchar_left);
+
+                if (sp.size() != buf.size()) {
+                    vector<uint8_t> newbuf{sp.begin(), sp.end()};
+                    buf.swap(newbuf);
+                }
+            }
+
+            if (last_packet && !buf.empty())
+                throw formatted_error("Data remaining in buffer");
+        } while (false);
 
         vector<uint8_t> t;
 
