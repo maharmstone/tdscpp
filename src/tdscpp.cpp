@@ -4230,6 +4230,14 @@ namespace tds {
 
     map<u16string, col_info> get_col_info(tds_or_session auto& n, u16string_view table, u16string_view db) {
         map<u16string, col_info> info;
+        u16string fullname;
+
+        if (!db.empty())
+            fullname = u16string(db) + u"." + u16string(table);
+        else if (!table.empty() && table.front() == '#') {
+            db = u"tempdb";
+            fullname = u"tempdb.dbo." + u16string(table);
+        }
 
         {
             query sq(n, no_check(uR"(SELECT columns.name,
@@ -4243,7 +4251,7 @@ namespace tds {
     assembly_types.assembly_qualified_name
 FROM )" + (db.empty() ? u"" : (u16string(db) + u".")) + uR"(sys.columns
 LEFT JOIN )" + (db.empty() ? u"" : (u16string(db) + u".")) + uR"(sys.assembly_types ON assembly_types.user_type_id = columns.user_type_id
-WHERE columns.object_id = OBJECT_ID(?))"), db.empty() ? table : (u16string(db) + u"." + u16string(table)));
+WHERE columns.object_id = OBJECT_ID(?))"), fullname.empty() ? table : fullname);
 
             while (sq.fetch_row()) {
                 auto type = (sql_type)(unsigned int)sq[1];
