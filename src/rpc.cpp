@@ -619,7 +619,7 @@ namespace tds {
 
     void rpc::wait_for_packet() {
         bool last_packet;
-        uint64_t varchar_left;
+        uint64_t varchar_left = 0;
 
         do {
             enum tds_msg type;
