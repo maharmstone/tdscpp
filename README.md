@@ -41,7 +41,16 @@ g++ -std=c++20 -ltdscpp test.cpp
 Release history
 ---------------
 
-* 20240212: Initial release
+* 20240629
+    * Fixed compilation on 32-bit platforms
+    * Fixed compilation on Clang
+    * Fixed case where sp_prepare doesn't know columns
+    * Fixed handling of short NUMERICs in BCP
+    * Sped up reading large VARCHAR(MAX) values
+    * Added CI
+
+* 20240212
+    * Initial release
 
 Sample code
 -----------

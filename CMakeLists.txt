@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(tdscpp VERSION 1.0)
+project(tdscpp VERSION 20240629)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
