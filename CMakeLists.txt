@@ -4,6 +4,7 @@ project(tdscpp VERSION 20240629)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+include(CheckIncludeFileCXX)
 
 option(BUILD_SAMPLE        "Build sample program" ON)
 option(WITH_OPENSSL        "Use OpenSSL for encryption" OFF)
@@ -33,6 +34,12 @@ endif()
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
+CHECK_INCLUDE_FILE_CXX("format" HAS_STD_FORMAT)
+
+if(NOT HAS_STD_FORMAT)
+    find_package(fmt REQUIRED)
+endif()
 
 add_definitions(-DTDSCPP_EXPORT)
 
@@ -89,6 +96,10 @@ if(NOT MSVC)
     if(ONECORE)
         target_link_options(tdscpp PUBLIC -nodefaultlibs)
     endif()
+endif()
+
+if(NOT HAS_STD_FORMAT)
+    target_link_libraries(tdscpp fmt::fmt-header-only)
 endif()
 
 if(NOT MSVC)

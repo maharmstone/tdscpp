@@ -2385,6 +2385,7 @@ namespace tds {
     };
 };
 
+#ifdef __cpp_lib_format
 template<>
 struct std::formatter<enum tds::sql_type> {
     constexpr auto parse(format_parse_context& ctx) {
@@ -2918,6 +2919,7 @@ struct std::formatter<tds::collation> {
         return std::format_to(ctx.out(), "{}", coll.to_string());
     }
 };
+#endif
 
 #ifdef _MSC_VER
 #define pragma warning(pop)

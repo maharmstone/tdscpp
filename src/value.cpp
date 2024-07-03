@@ -24,6 +24,7 @@
 #include <charconv>
 
 using namespace std;
+using fmtns::format;
 
 static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offset) noexcept {
     uint8_t h = 0, m, s;

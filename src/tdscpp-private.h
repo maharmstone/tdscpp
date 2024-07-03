@@ -21,8 +21,15 @@
 #include <cstdint>
 #include <thread>
 #include <condition_variable>
-#include <format>
 #include "config.h"
+
+#ifdef __cpp_lib_format
+#include <format>
+namespace fmtns = std;
+#else
+#include <fmt/format.h>
+namespace fmtns = fmt;
+#endif
 
 #ifdef _WIN32
 #define SECURITY_WIN32
@@ -41,7 +48,7 @@
 class formatted_error : public std::exception {
 public:
     template<typename... Args>
-    formatted_error(std::format_string<Args...> s, Args&&... args) : msg(std::format(s, std::forward<Args>(args)...)) {
+    formatted_error(fmtns::format_string<Args...> s, Args&&... args) : msg(fmtns::format(s, std::forward<Args>(args)...)) {
     }
 
     const char* what() const noexcept {
@@ -882,7 +889,7 @@ enum class sec_error : uint32_t {
 };
 
 template<>
-struct std::formatter<enum sec_error> {
+struct fmtns::formatter<enum sec_error> {
     constexpr auto parse(format_parse_context& ctx) {
         auto it = ctx.begin();
 
@@ -896,286 +903,286 @@ struct std::formatter<enum sec_error> {
     auto format(enum sec_error t, format_context& ctx) const {
         switch (t) {
             case sec_error::_SEC_E_OK:
-                return std::format_to(ctx.out(), "SEC_E_OK");
+                return fmtns::format_to(ctx.out(), "SEC_E_OK");
 
             case sec_error::_SEC_E_INSUFFICIENT_MEMORY:
-                return std::format_to(ctx.out(), "SEC_E_INSUFFICIENT_MEMORY");
+                return fmtns::format_to(ctx.out(), "SEC_E_INSUFFICIENT_MEMORY");
 
             case sec_error::_SEC_E_INVALID_HANDLE:
-                return std::format_to(ctx.out(), "SEC_E_INVALID_HANDLE");
+                return fmtns::format_to(ctx.out(), "SEC_E_INVALID_HANDLE");
 
             case sec_error::_SEC_E_UNSUPPORTED_FUNCTION:
-                return std::format_to(ctx.out(), "SEC_E_UNSUPPORTED_FUNCTION");
+                return fmtns::format_to(ctx.out(), "SEC_E_UNSUPPORTED_FUNCTION");
 
             case sec_error::_SEC_E_TARGET_UNKNOWN:
-                return std::format_to(ctx.out(), "SEC_E_TARGET_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "SEC_E_TARGET_UNKNOWN");
 
             case sec_error::_SEC_E_INTERNAL_ERROR:
-                return std::format_to(ctx.out(), "SEC_E_INTERNAL_ERROR");
+                return fmtns::format_to(ctx.out(), "SEC_E_INTERNAL_ERROR");
 
             case sec_error::_SEC_E_SECPKG_NOT_FOUND:
-                return std::format_to(ctx.out(), "SEC_E_SECPKG_NOT_FOUND");
+                return fmtns::format_to(ctx.out(), "SEC_E_SECPKG_NOT_FOUND");
 
             case sec_error::_SEC_E_NOT_OWNER:
-                return std::format_to(ctx.out(), "SEC_E_NOT_OWNER");
+                return fmtns::format_to(ctx.out(), "SEC_E_NOT_OWNER");
 
             case sec_error::_SEC_E_CANNOT_INSTALL:
-                return std::format_to(ctx.out(), "SEC_E_CANNOT_INSTALL");
+                return fmtns::format_to(ctx.out(), "SEC_E_CANNOT_INSTALL");
 
             case sec_error::_SEC_E_INVALID_TOKEN:
-                return std::format_to(ctx.out(), "SEC_E_INVALID_TOKEN");
+                return fmtns::format_to(ctx.out(), "SEC_E_INVALID_TOKEN");
 
             case sec_error::_SEC_E_CANNOT_PACK:
-                return std::format_to(ctx.out(), "SEC_E_CANNOT_PACK");
+                return fmtns::format_to(ctx.out(), "SEC_E_CANNOT_PACK");
 
             case sec_error::_SEC_E_QOP_NOT_SUPPORTED:
-                return std::format_to(ctx.out(), "SEC_E_QOP_NOT_SUPPORTED");
+                return fmtns::format_to(ctx.out(), "SEC_E_QOP_NOT_SUPPORTED");
 
             case sec_error::_SEC_E_NO_IMPERSONATION:
-                return std::format_to(ctx.out(), "SEC_E_NO_IMPERSONATION");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_IMPERSONATION");
 
             case sec_error::_SEC_E_LOGON_DENIED:
-                return std::format_to(ctx.out(), "SEC_E_LOGON_DENIED");
+                return fmtns::format_to(ctx.out(), "SEC_E_LOGON_DENIED");
 
             case sec_error::_SEC_E_UNKNOWN_CREDENTIALS:
-                return std::format_to(ctx.out(), "SEC_E_UNKNOWN_CREDENTIALS");
+                return fmtns::format_to(ctx.out(), "SEC_E_UNKNOWN_CREDENTIALS");
 
             case sec_error::_SEC_E_NO_CREDENTIALS:
-                return std::format_to(ctx.out(), "SEC_E_NO_CREDENTIALS");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_CREDENTIALS");
 
             case sec_error::_SEC_E_MESSAGE_ALTERED:
-                return std::format_to(ctx.out(), "SEC_E_MESSAGE_ALTERED");
+                return fmtns::format_to(ctx.out(), "SEC_E_MESSAGE_ALTERED");
 
             case sec_error::_SEC_E_OUT_OF_SEQUENCE:
-                return std::format_to(ctx.out(), "SEC_E_OUT_OF_SEQUENCE");
+                return fmtns::format_to(ctx.out(), "SEC_E_OUT_OF_SEQUENCE");
 
             case sec_error::_SEC_E_NO_AUTHENTICATING_AUTHORITY:
-                return std::format_to(ctx.out(), "SEC_E_NO_AUTHENTICATING_AUTHORITY");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_AUTHENTICATING_AUTHORITY");
 
             case sec_error::_SEC_I_CONTINUE_NEEDED:
-                return std::format_to(ctx.out(), "SEC_I_CONTINUE_NEEDED");
+                return fmtns::format_to(ctx.out(), "SEC_I_CONTINUE_NEEDED");
 
             case sec_error::_SEC_I_COMPLETE_NEEDED:
-                return std::format_to(ctx.out(), "SEC_I_COMPLETE_NEEDED");
+                return fmtns::format_to(ctx.out(), "SEC_I_COMPLETE_NEEDED");
 
             case sec_error::_SEC_I_COMPLETE_AND_CONTINUE:
-                return std::format_to(ctx.out(), "SEC_I_COMPLETE_AND_CONTINUE");
+                return fmtns::format_to(ctx.out(), "SEC_I_COMPLETE_AND_CONTINUE");
 
             case sec_error::_SEC_I_LOCAL_LOGON:
-                return std::format_to(ctx.out(), "SEC_I_LOCAL_LOGON");
+                return fmtns::format_to(ctx.out(), "SEC_I_LOCAL_LOGON");
 
             case sec_error::_SEC_I_GENERIC_EXTENSION_RECEIVED:
-                return std::format_to(ctx.out(), "SEC_I_GENERIC_EXTENSION_RECEIVED");
+                return fmtns::format_to(ctx.out(), "SEC_I_GENERIC_EXTENSION_RECEIVED");
 
             case sec_error::_SEC_E_BAD_PKGID:
-                return std::format_to(ctx.out(), "SEC_E_BAD_PKGID");
+                return fmtns::format_to(ctx.out(), "SEC_E_BAD_PKGID");
 
             case sec_error::_SEC_E_CONTEXT_EXPIRED:
-                return std::format_to(ctx.out(), "SEC_E_CONTEXT_EXPIRED");
+                return fmtns::format_to(ctx.out(), "SEC_E_CONTEXT_EXPIRED");
 
             case sec_error::_SEC_I_CONTEXT_EXPIRED:
-                return std::format_to(ctx.out(), "SEC_I_CONTEXT_EXPIRED");
+                return fmtns::format_to(ctx.out(), "SEC_I_CONTEXT_EXPIRED");
 
             case sec_error::_SEC_E_INCOMPLETE_MESSAGE:
-                return std::format_to(ctx.out(), "SEC_E_INCOMPLETE_MESSAGE");
+                return fmtns::format_to(ctx.out(), "SEC_E_INCOMPLETE_MESSAGE");
 
             case sec_error::_SEC_E_INCOMPLETE_CREDENTIALS:
-                return std::format_to(ctx.out(), "SEC_E_INCOMPLETE_CREDENTIALS");
+                return fmtns::format_to(ctx.out(), "SEC_E_INCOMPLETE_CREDENTIALS");
 
             case sec_error::_SEC_E_BUFFER_TOO_SMALL:
-                return std::format_to(ctx.out(), "SEC_E_BUFFER_TOO_SMALL");
+                return fmtns::format_to(ctx.out(), "SEC_E_BUFFER_TOO_SMALL");
 
             case sec_error::_SEC_I_INCOMPLETE_CREDENTIALS:
-                return std::format_to(ctx.out(), "SEC_I_INCOMPLETE_CREDENTIALS");
+                return fmtns::format_to(ctx.out(), "SEC_I_INCOMPLETE_CREDENTIALS");
 
             case sec_error::_SEC_I_RENEGOTIATE:
-                return std::format_to(ctx.out(), "SEC_I_RENEGOTIATE");
+                return fmtns::format_to(ctx.out(), "SEC_I_RENEGOTIATE");
 
             case sec_error::_SEC_E_WRONG_PRINCIPAL:
-                return std::format_to(ctx.out(), "SEC_E_WRONG_PRINCIPAL");
+                return fmtns::format_to(ctx.out(), "SEC_E_WRONG_PRINCIPAL");
 
             case sec_error::_SEC_I_NO_LSA_CONTEXT:
-                return std::format_to(ctx.out(), "SEC_I_NO_LSA_CONTEXT");
+                return fmtns::format_to(ctx.out(), "SEC_I_NO_LSA_CONTEXT");
 
             case sec_error::_SEC_E_TIME_SKEW:
-                return std::format_to(ctx.out(), "SEC_E_TIME_SKEW");
+                return fmtns::format_to(ctx.out(), "SEC_E_TIME_SKEW");
 
             case sec_error::_SEC_E_UNTRUSTED_ROOT:
-                return std::format_to(ctx.out(), "SEC_E_UNTRUSTED_ROOT");
+                return fmtns::format_to(ctx.out(), "SEC_E_UNTRUSTED_ROOT");
 
             case sec_error::_SEC_E_ILLEGAL_MESSAGE:
-                return std::format_to(ctx.out(), "SEC_E_ILLEGAL_MESSAGE");
+                return fmtns::format_to(ctx.out(), "SEC_E_ILLEGAL_MESSAGE");
 
             case sec_error::_SEC_E_CERT_UNKNOWN:
-                return std::format_to(ctx.out(), "SEC_E_CERT_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "SEC_E_CERT_UNKNOWN");
 
             case sec_error::_SEC_E_CERT_EXPIRED:
-                return std::format_to(ctx.out(), "SEC_E_CERT_EXPIRED");
+                return fmtns::format_to(ctx.out(), "SEC_E_CERT_EXPIRED");
 
             case sec_error::_SEC_E_ENCRYPT_FAILURE:
-                return std::format_to(ctx.out(), "SEC_E_ENCRYPT_FAILURE");
+                return fmtns::format_to(ctx.out(), "SEC_E_ENCRYPT_FAILURE");
 
             case sec_error::_SEC_E_DECRYPT_FAILURE:
-                return std::format_to(ctx.out(), "SEC_E_DECRYPT_FAILURE");
+                return fmtns::format_to(ctx.out(), "SEC_E_DECRYPT_FAILURE");
 
             case sec_error::_SEC_E_ALGORITHM_MISMATCH:
-                return std::format_to(ctx.out(), "SEC_E_ALGORITHM_MISMATCH");
+                return fmtns::format_to(ctx.out(), "SEC_E_ALGORITHM_MISMATCH");
 
             case sec_error::_SEC_E_SECURITY_QOS_FAILED:
-                return std::format_to(ctx.out(), "SEC_E_SECURITY_QOS_FAILED");
+                return fmtns::format_to(ctx.out(), "SEC_E_SECURITY_QOS_FAILED");
 
             case sec_error::_SEC_E_UNFINISHED_CONTEXT_DELETED:
-                return std::format_to(ctx.out(), "SEC_E_UNFINISHED_CONTEXT_DELETED");
+                return fmtns::format_to(ctx.out(), "SEC_E_UNFINISHED_CONTEXT_DELETED");
 
             case sec_error::_SEC_E_NO_TGT_REPLY:
-                return std::format_to(ctx.out(), "SEC_E_NO_TGT_REPLY");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_TGT_REPLY");
 
             case sec_error::_SEC_E_NO_IP_ADDRESSES:
-                return std::format_to(ctx.out(), "SEC_E_NO_IP_ADDRESSES");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_IP_ADDRESSES");
 
             case sec_error::_SEC_E_WRONG_CREDENTIAL_HANDLE:
-                return std::format_to(ctx.out(), "SEC_E_WRONG_CREDENTIAL_HANDLE");
+                return fmtns::format_to(ctx.out(), "SEC_E_WRONG_CREDENTIAL_HANDLE");
 
             case sec_error::_SEC_E_CRYPTO_SYSTEM_INVALID:
-                return std::format_to(ctx.out(), "SEC_E_CRYPTO_SYSTEM_INVALID");
+                return fmtns::format_to(ctx.out(), "SEC_E_CRYPTO_SYSTEM_INVALID");
 
             case sec_error::_SEC_E_MAX_REFERRALS_EXCEEDED:
-                return std::format_to(ctx.out(), "SEC_E_MAX_REFERRALS_EXCEEDED");
+                return fmtns::format_to(ctx.out(), "SEC_E_MAX_REFERRALS_EXCEEDED");
 
             case sec_error::_SEC_E_MUST_BE_KDC:
-                return std::format_to(ctx.out(), "SEC_E_MUST_BE_KDC");
+                return fmtns::format_to(ctx.out(), "SEC_E_MUST_BE_KDC");
 
             case sec_error::_SEC_E_STRONG_CRYPTO_NOT_SUPPORTED:
-                return std::format_to(ctx.out(), "SEC_E_STRONG_CRYPTO_NOT_SUPPORTED");
+                return fmtns::format_to(ctx.out(), "SEC_E_STRONG_CRYPTO_NOT_SUPPORTED");
 
             case sec_error::_SEC_E_TOO_MANY_PRINCIPALS:
-                return std::format_to(ctx.out(), "SEC_E_TOO_MANY_PRINCIPALS");
+                return fmtns::format_to(ctx.out(), "SEC_E_TOO_MANY_PRINCIPALS");
 
             case sec_error::_SEC_E_NO_PA_DATA:
-                return std::format_to(ctx.out(), "SEC_E_NO_PA_DATA");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_PA_DATA");
 
             case sec_error::_SEC_E_PKINIT_NAME_MISMATCH:
-                return std::format_to(ctx.out(), "SEC_E_PKINIT_NAME_MISMATCH");
+                return fmtns::format_to(ctx.out(), "SEC_E_PKINIT_NAME_MISMATCH");
 
             case sec_error::_SEC_E_SMARTCARD_LOGON_REQUIRED:
-                return std::format_to(ctx.out(), "SEC_E_SMARTCARD_LOGON_REQUIRED");
+                return fmtns::format_to(ctx.out(), "SEC_E_SMARTCARD_LOGON_REQUIRED");
 
             case sec_error::_SEC_E_SHUTDOWN_IN_PROGRESS:
-                return std::format_to(ctx.out(), "SEC_E_SHUTDOWN_IN_PROGRESS");
+                return fmtns::format_to(ctx.out(), "SEC_E_SHUTDOWN_IN_PROGRESS");
 
             case sec_error::_SEC_E_KDC_INVALID_REQUEST:
-                return std::format_to(ctx.out(), "SEC_E_KDC_INVALID_REQUEST");
+                return fmtns::format_to(ctx.out(), "SEC_E_KDC_INVALID_REQUEST");
 
             case sec_error::_SEC_E_KDC_UNABLE_TO_REFER:
-                return std::format_to(ctx.out(), "SEC_E_KDC_UNABLE_TO_REFER");
+                return fmtns::format_to(ctx.out(), "SEC_E_KDC_UNABLE_TO_REFER");
 
             case sec_error::_SEC_E_KDC_UNKNOWN_ETYPE:
-                return std::format_to(ctx.out(), "SEC_E_KDC_UNKNOWN_ETYPE");
+                return fmtns::format_to(ctx.out(), "SEC_E_KDC_UNKNOWN_ETYPE");
 
             case sec_error::_SEC_E_UNSUPPORTED_PREAUTH:
-                return std::format_to(ctx.out(), "SEC_E_UNSUPPORTED_PREAUTH");
+                return fmtns::format_to(ctx.out(), "SEC_E_UNSUPPORTED_PREAUTH");
 
             case sec_error::_SEC_E_DELEGATION_REQUIRED:
-                return std::format_to(ctx.out(), "SEC_E_DELEGATION_REQUIRED");
+                return fmtns::format_to(ctx.out(), "SEC_E_DELEGATION_REQUIRED");
 
             case sec_error::_SEC_E_BAD_BINDINGS:
-                return std::format_to(ctx.out(), "SEC_E_BAD_BINDINGS");
+                return fmtns::format_to(ctx.out(), "SEC_E_BAD_BINDINGS");
 
             case sec_error::_SEC_E_MULTIPLE_ACCOUNTS:
-                return std::format_to(ctx.out(), "SEC_E_MULTIPLE_ACCOUNTS");
+                return fmtns::format_to(ctx.out(), "SEC_E_MULTIPLE_ACCOUNTS");
 
             case sec_error::_SEC_E_NO_KERB_KEY:
-                return std::format_to(ctx.out(), "SEC_E_NO_KERB_KEY");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_KERB_KEY");
 
             case sec_error::_SEC_E_CERT_WRONG_USAGE:
-                return std::format_to(ctx.out(), "SEC_E_CERT_WRONG_USAGE");
+                return fmtns::format_to(ctx.out(), "SEC_E_CERT_WRONG_USAGE");
 
             case sec_error::_SEC_E_DOWNGRADE_DETECTED:
-                return std::format_to(ctx.out(), "SEC_E_DOWNGRADE_DETECTED");
+                return fmtns::format_to(ctx.out(), "SEC_E_DOWNGRADE_DETECTED");
 
             case sec_error::_SEC_E_SMARTCARD_CERT_REVOKED:
-                return std::format_to(ctx.out(), "SEC_E_SMARTCARD_CERT_REVOKED");
+                return fmtns::format_to(ctx.out(), "SEC_E_SMARTCARD_CERT_REVOKED");
 
             case sec_error::_SEC_E_ISSUING_CA_UNTRUSTED:
-                return std::format_to(ctx.out(), "SEC_E_ISSUING_CA_UNTRUSTED");
+                return fmtns::format_to(ctx.out(), "SEC_E_ISSUING_CA_UNTRUSTED");
 
             case sec_error::_SEC_E_REVOCATION_OFFLINE_C:
-                return std::format_to(ctx.out(), "SEC_E_REVOCATION_OFFLINE_C");
+                return fmtns::format_to(ctx.out(), "SEC_E_REVOCATION_OFFLINE_C");
 
             case sec_error::_SEC_E_PKINIT_CLIENT_FAILURE:
-                return std::format_to(ctx.out(), "SEC_E_PKINIT_CLIENT_FAILURE");
+                return fmtns::format_to(ctx.out(), "SEC_E_PKINIT_CLIENT_FAILURE");
 
             case sec_error::_SEC_E_SMARTCARD_CERT_EXPIRED:
-                return std::format_to(ctx.out(), "SEC_E_SMARTCARD_CERT_EXPIRED");
+                return fmtns::format_to(ctx.out(), "SEC_E_SMARTCARD_CERT_EXPIRED");
 
             case sec_error::_SEC_E_NO_S4U_PROT_SUPPORT:
-                return std::format_to(ctx.out(), "SEC_E_NO_S4U_PROT_SUPPORT");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_S4U_PROT_SUPPORT");
 
             case sec_error::_SEC_E_CROSSREALM_DELEGATION_FAILURE:
-                return std::format_to(ctx.out(), "SEC_E_CROSSREALM_DELEGATION_FAILURE");
+                return fmtns::format_to(ctx.out(), "SEC_E_CROSSREALM_DELEGATION_FAILURE");
 
             case sec_error::_SEC_E_REVOCATION_OFFLINE_KDC:
-                return std::format_to(ctx.out(), "SEC_E_REVOCATION_OFFLINE_KDC");
+                return fmtns::format_to(ctx.out(), "SEC_E_REVOCATION_OFFLINE_KDC");
 
             case sec_error::_SEC_E_ISSUING_CA_UNTRUSTED_KDC:
-                return std::format_to(ctx.out(), "SEC_E_ISSUING_CA_UNTRUSTED_KDC");
+                return fmtns::format_to(ctx.out(), "SEC_E_ISSUING_CA_UNTRUSTED_KDC");
 
             case sec_error::_SEC_E_KDC_CERT_EXPIRED:
-                return std::format_to(ctx.out(), "SEC_E_KDC_CERT_EXPIRED");
+                return fmtns::format_to(ctx.out(), "SEC_E_KDC_CERT_EXPIRED");
 
             case sec_error::_SEC_E_KDC_CERT_REVOKED:
-                return std::format_to(ctx.out(), "SEC_E_KDC_CERT_REVOKED");
+                return fmtns::format_to(ctx.out(), "SEC_E_KDC_CERT_REVOKED");
 
             case sec_error::_SEC_I_SIGNATURE_NEEDED:
-                return std::format_to(ctx.out(), "SEC_I_SIGNATURE_NEEDED");
+                return fmtns::format_to(ctx.out(), "SEC_I_SIGNATURE_NEEDED");
 
             case sec_error::_SEC_E_INVALID_PARAMETER:
-                return std::format_to(ctx.out(), "SEC_E_INVALID_PARAMETER");
+                return fmtns::format_to(ctx.out(), "SEC_E_INVALID_PARAMETER");
 
             case sec_error::_SEC_E_DELEGATION_POLICY:
-                return std::format_to(ctx.out(), "SEC_E_DELEGATION_POLICY");
+                return fmtns::format_to(ctx.out(), "SEC_E_DELEGATION_POLICY");
 
             case sec_error::_SEC_E_POLICY_NLTM_ONLY:
-                return std::format_to(ctx.out(), "SEC_E_POLICY_NLTM_ONLY");
+                return fmtns::format_to(ctx.out(), "SEC_E_POLICY_NLTM_ONLY");
 
             case sec_error::_SEC_I_NO_RENEGOTIATION:
-                return std::format_to(ctx.out(), "SEC_I_NO_RENEGOTIATION");
+                return fmtns::format_to(ctx.out(), "SEC_I_NO_RENEGOTIATION");
 
             case sec_error::_SEC_E_NO_CONTEXT:
-                return std::format_to(ctx.out(), "SEC_E_NO_CONTEXT");
+                return fmtns::format_to(ctx.out(), "SEC_E_NO_CONTEXT");
 
             case sec_error::_SEC_E_PKU2U_CERT_FAILURE:
-                return std::format_to(ctx.out(), "SEC_E_PKU2U_CERT_FAILURE");
+                return fmtns::format_to(ctx.out(), "SEC_E_PKU2U_CERT_FAILURE");
 
             case sec_error::_SEC_E_MUTUAL_AUTH_FAILED:
-                return std::format_to(ctx.out(), "SEC_E_MUTUAL_AUTH_FAILED");
+                return fmtns::format_to(ctx.out(), "SEC_E_MUTUAL_AUTH_FAILED");
 
             case sec_error::_SEC_I_MESSAGE_FRAGMENT:
-                return std::format_to(ctx.out(), "SEC_I_MESSAGE_FRAGMENT");
+                return fmtns::format_to(ctx.out(), "SEC_I_MESSAGE_FRAGMENT");
 
             case sec_error::_SEC_E_ONLY_HTTPS_ALLOWED:
-                return std::format_to(ctx.out(), "SEC_E_ONLY_HTTPS_ALLOWED");
+                return fmtns::format_to(ctx.out(), "SEC_E_ONLY_HTTPS_ALLOWED");
 
             case sec_error::_SEC_I_CONTINUE_NEEDED_MESSAGE_OK:
-                return std::format_to(ctx.out(), "SEC_I_CONTINUE_NEEDED_MESSAGE_OK");
+                return fmtns::format_to(ctx.out(), "SEC_I_CONTINUE_NEEDED_MESSAGE_OK");
 
             case sec_error::_SEC_E_APPLICATION_PROTOCOL_MISMATCH:
-                return std::format_to(ctx.out(), "SEC_E_APPLICATION_PROTOCOL_MISMATCH");
+                return fmtns::format_to(ctx.out(), "SEC_E_APPLICATION_PROTOCOL_MISMATCH");
 
             case sec_error::_SEC_I_ASYNC_CALL_PENDING:
-                return std::format_to(ctx.out(), "SEC_I_ASYNC_CALL_PENDING");
+                return fmtns::format_to(ctx.out(), "SEC_I_ASYNC_CALL_PENDING");
 
             case sec_error::_SEC_E_INVALID_UPN_NAME:
-                return std::format_to(ctx.out(), "SEC_E_INVALID_UPN_NAME");
+                return fmtns::format_to(ctx.out(), "SEC_E_INVALID_UPN_NAME");
 
             case sec_error::_SEC_E_EXT_BUFFER_TOO_SMALL:
-                return std::format_to(ctx.out(), "SEC_E_EXT_BUFFER_TOO_SMALL");
+                return fmtns::format_to(ctx.out(), "SEC_E_EXT_BUFFER_TOO_SMALL");
 
             case sec_error::_SEC_E_INSUFFICIENT_BUFFERS:
-                return std::format_to(ctx.out(), "SEC_E_INSUFFICIENT_BUFFERS");
+                return fmtns::format_to(ctx.out(), "SEC_E_INSUFFICIENT_BUFFERS");
 
             default:
-                return std::format_to(ctx.out(), "{:08x}", (uint32_t)t);
+                return fmtns::format_to(ctx.out(), "{:08x}", (uint32_t)t);
         }
     }
 };
@@ -1542,6 +1549,396 @@ static constexpr bool is_byte_len_type(enum tds::sql_type type) noexcept {
             return false;
     }
 }
+
+#ifndef __cpp_lib_format
+template<>
+struct fmt::formatter<enum tds::token> {
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin();
+
+        if (it != ctx.end() && *it != '}')
+            throw fmt::format_error("invalid format");
+
+        return it;
+    }
+
+    template<typename format_context>
+    auto format(enum tds::token t, format_context& ctx) const {
+        switch (t) {
+            case tds::token::OFFSET:
+                return fmt::format_to(ctx.out(), "OFFSET");
+
+            case tds::token::RETURNSTATUS:
+                return fmt::format_to(ctx.out(), "RETURNSTATUS");
+
+            case tds::token::COLMETADATA:
+                return fmt::format_to(ctx.out(), "COLMETADATA");
+
+            case tds::token::ALTMETADATA:
+                return fmt::format_to(ctx.out(), "ALTMETADATA");
+
+            case tds::token::DATACLASSIFICATION:
+                return fmt::format_to(ctx.out(), "DATACLASSIFICATION");
+
+            case tds::token::TABNAME:
+                return fmt::format_to(ctx.out(), "TABNAME");
+
+            case tds::token::COLINFO:
+                return fmt::format_to(ctx.out(), "COLINFO");
+
+            case tds::token::ORDER:
+                return fmt::format_to(ctx.out(), "ORDER");
+
+            case tds::token::TDS_ERROR:
+                return fmt::format_to(ctx.out(), "ERROR");
+
+            case tds::token::INFO:
+                return fmt::format_to(ctx.out(), "INFO");
+
+            case tds::token::RETURNVALUE:
+                return fmt::format_to(ctx.out(), "RETURNVALUE");
+
+            case tds::token::LOGINACK:
+                return fmt::format_to(ctx.out(), "LOGINACK");
+
+            case tds::token::FEATUREEXTACK:
+                return fmt::format_to(ctx.out(), "FEATUREEXTACK");
+
+            case tds::token::ROW:
+                return fmt::format_to(ctx.out(), "ROW");
+
+            case tds::token::NBCROW:
+                return fmt::format_to(ctx.out(), "NBCROW");
+
+            case tds::token::ALTROW:
+                return fmt::format_to(ctx.out(), "ALTROW");
+
+            case tds::token::ENVCHANGE:
+                return fmt::format_to(ctx.out(), "ENVCHANGE");
+
+            case tds::token::SESSIONSTATE:
+                return fmt::format_to(ctx.out(), "SESSIONSTATE");
+
+            case tds::token::SSPI:
+                return fmt::format_to(ctx.out(), "SSPI");
+
+            case tds::token::FEDAUTHINFO:
+                return fmt::format_to(ctx.out(), "FEDAUTHINFO");
+
+            case tds::token::DONE:
+                return fmt::format_to(ctx.out(), "DONE");
+
+            case tds::token::DONEPROC:
+                return fmt::format_to(ctx.out(), "DONEPROC");
+
+            case tds::token::DONEINPROC:
+                return fmt::format_to(ctx.out(), "DONEINPROC");
+
+            default:
+                return fmt::format_to(ctx.out(), "{:x}", (uint8_t)t);
+        }
+    }
+};
+
+template<>
+struct fmt::formatter<enum tds::sql_type> {
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin();
+
+        if (it != ctx.end() && *it != '}')
+            throw fmt::format_error("invalid format");
+
+        return it;
+    }
+
+    template<typename format_context>
+    auto format(enum tds::sql_type t, format_context& ctx) const {
+        switch (t) {
+            case tds::sql_type::IMAGE:
+                return fmt::format_to(ctx.out(), "IMAGE");
+
+            case tds::sql_type::TEXT:
+                return fmt::format_to(ctx.out(), "TEXT");
+
+            case tds::sql_type::UNIQUEIDENTIFIER:
+                return fmt::format_to(ctx.out(), "UNIQUEIDENTIFIER");
+
+            case tds::sql_type::INTN:
+                return fmt::format_to(ctx.out(), "INTN");
+
+            case tds::sql_type::DATE:
+                return fmt::format_to(ctx.out(), "DATE");
+
+            case tds::sql_type::TIME:
+                return fmt::format_to(ctx.out(), "TIME");
+
+            case tds::sql_type::DATETIME2:
+                return fmt::format_to(ctx.out(), "DATETIME2");
+
+            case tds::sql_type::DATETIMEOFFSET:
+                return fmt::format_to(ctx.out(), "DATETIMEOFFSET");
+
+            case tds::sql_type::SQL_VARIANT:
+                return fmt::format_to(ctx.out(), "SQL_VARIANT");
+
+            case tds::sql_type::NTEXT:
+                return fmt::format_to(ctx.out(), "NTEXT");
+
+            case tds::sql_type::BITN:
+                return fmt::format_to(ctx.out(), "BITN");
+
+            case tds::sql_type::DECIMAL:
+                return fmt::format_to(ctx.out(), "DECIMAL");
+
+            case tds::sql_type::NUMERIC:
+                return fmt::format_to(ctx.out(), "NUMERIC");
+
+            case tds::sql_type::FLTN:
+                return fmt::format_to(ctx.out(), "FLTN");
+
+            case tds::sql_type::MONEYN:
+                return fmt::format_to(ctx.out(), "MONEYN");
+
+            case tds::sql_type::DATETIMN:
+                return fmt::format_to(ctx.out(), "DATETIMN");
+
+            case tds::sql_type::VARBINARY:
+                return fmt::format_to(ctx.out(), "VARBINARY");
+
+            case tds::sql_type::VARCHAR:
+                return fmt::format_to(ctx.out(), "VARCHAR");
+
+            case tds::sql_type::BINARY:
+                return fmt::format_to(ctx.out(), "BINARY");
+
+            case tds::sql_type::CHAR:
+                return fmt::format_to(ctx.out(), "CHAR");
+
+            case tds::sql_type::NVARCHAR:
+                return fmt::format_to(ctx.out(), "NVARCHAR");
+
+            case tds::sql_type::NCHAR:
+                return fmt::format_to(ctx.out(), "NCHAR");
+
+            case tds::sql_type::UDT:
+                return fmt::format_to(ctx.out(), "UDT");
+
+            case tds::sql_type::XML:
+                return fmt::format_to(ctx.out(), "XML");
+
+            case tds::sql_type::SQL_NULL:
+                return fmt::format_to(ctx.out(), "NULL");
+
+            case tds::sql_type::TINYINT:
+                return fmt::format_to(ctx.out(), "TINYINT");
+
+            case tds::sql_type::BIT:
+                return fmt::format_to(ctx.out(), "BIT");
+
+            case tds::sql_type::SMALLINT:
+                return fmt::format_to(ctx.out(), "SMALLINT");
+
+            case tds::sql_type::INT:
+                return fmt::format_to(ctx.out(), "INT");
+
+            case tds::sql_type::DATETIM4:
+                return fmt::format_to(ctx.out(), "DATETIM4");
+
+            case tds::sql_type::REAL:
+                return fmt::format_to(ctx.out(), "REAL");
+
+            case tds::sql_type::MONEY:
+                return fmt::format_to(ctx.out(), "MONEY");
+
+            case tds::sql_type::DATETIME:
+                return fmt::format_to(ctx.out(), "DATETIME");
+
+            case tds::sql_type::FLOAT:
+                return fmt::format_to(ctx.out(), "FLOAT");
+
+            case tds::sql_type::SMALLMONEY:
+                return fmt::format_to(ctx.out(), "SMALLMONEY");
+
+            case tds::sql_type::BIGINT:
+                return fmt::format_to(ctx.out(), "BIGINT");
+
+            default:
+                return fmt::format_to(ctx.out(), "{:x}", (uint8_t)t);
+        }
+    }
+};
+
+template<>
+struct fmt::formatter<tds::value> {
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin();
+
+        if (it != ctx.end() && *it != '}')
+            throw fmt::format_error("invalid format");
+
+        return it;
+    }
+
+    template<typename format_context>
+    auto format(const tds::value& p, format_context& ctx) const {
+        if (p.is_null)
+            return fmt::format_to(ctx.out(), "NULL");
+        else if (p.type == tds::sql_type::VARBINARY || p.type == tds::sql_type::BINARY || p.type == tds::sql_type::IMAGE) {
+            std::string s = "0x";
+
+            for (auto c : p.val) {
+                s += fmt::format("{:02x}", (uint8_t)c);
+            }
+
+            return fmt::format_to(ctx.out(), "{}", s);
+        } else
+            return fmt::format_to(ctx.out(), "{}", (std::string)p);
+    }
+};
+
+template<>
+struct fmt::formatter<tds::datetime> {
+    unsigned int len = 7;
+    int len_arg = -1;
+
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin();
+
+        if (it != ctx.end()) {
+            if (*it >= '0' && *it <= '7') {
+                len = (unsigned int)(*it - '0');
+                it++;
+            } else if (*it == '{') {
+                it++;
+
+                if (it == ctx.end() || *it != '}')
+                    throw format_error("invalid format");
+
+                len_arg = (int)ctx.next_arg_id();
+
+                it++;
+            }
+        }
+
+        if (it != ctx.end() && *it != '}')
+            throw format_error("invalid format");
+
+        return it;
+    }
+
+    template<typename format_context>
+    auto format(const tds::datetime& dt, format_context& ctx) const {
+        auto len2 = len;
+        auto hms = std::chrono::hh_mm_ss{dt.t};
+
+        if (len_arg != -1) {
+            auto arg = ctx.arg((size_t)len_arg);
+
+            fmt::visit_format_arg([&](auto&& v) {
+                if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
+                    len2 = (unsigned int)v;
+
+                    if (len2 > 7)
+                        throw format_error("size out of range");
+                } else
+                    throw format_error("invalid size argument");
+            }, arg);
+        }
+
+        if (len2 == 0) {
+            return fmt::format_to(ctx.out(), "{:04}-{:02}-{:02} {:02}:{:02}:{:02}",
+                            (int)dt.d.year(), (unsigned int)dt.d.month(), (unsigned int)dt.d.day(),
+                            hms.hours().count(), hms.minutes().count(), hms.seconds().count());
+        }
+
+        double s = (double)hms.seconds().count() + ((double)hms.subseconds().count() / 10000000.0);
+
+        return fmt::format_to(ctx.out(), "{:04}-{:02}-{:02} {:02}:{:02}:{:0{}.{}f}",
+                         (int)dt.d.year(), (unsigned int)dt.d.month(), (unsigned int)dt.d.day(),
+                         hms.hours().count(), hms.minutes().count(), s, len2 + 3, len2);
+    }
+};
+
+template<>
+struct fmt::formatter<tds::datetimeoffset> {
+    unsigned int len = 7;
+    int len_arg = -1;
+
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin();
+
+        if (it != ctx.end()) {
+            if (*it >= '0' && *it <= '7') {
+                len = (unsigned int)(*it - '0');
+                it++;
+            } else if (*it == '{') {
+                it++;
+
+                if (it == ctx.end() || *it != '}')
+                    throw format_error("invalid format");
+
+                len_arg = (int)ctx.next_arg_id();
+
+                it++;
+            }
+        }
+
+        if (it != ctx.end() && *it != '}')
+            throw format_error("invalid format");
+
+        return it;
+    }
+
+    template<typename format_context>
+    auto format(const tds::datetimeoffset& dto, format_context& ctx) const {
+        auto len2 = len;
+
+        if (len_arg != -1) {
+            auto arg = ctx.arg((size_t)len_arg);
+
+            fmt::visit_format_arg([&](auto&& v) {
+                if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
+                    len2 = (unsigned int)v;
+
+                    if (len2 > 7)
+                        throw format_error("size out of range");
+                } else
+                    throw format_error("invalid size argument");
+            }, arg);
+        }
+
+        auto d = dto.d;
+        auto t = dto.t;
+
+        t += std::chrono::minutes{dto.offset};
+
+        if (t < tds::time_t::zero()) {
+            d = std::chrono::year_month_day{(std::chrono::sys_days)d - std::chrono::days{1}};
+            t += std::chrono::days{1};
+        } else if (t >= std::chrono::days{1}) {
+            d = std::chrono::year_month_day{(std::chrono::sys_days)d + std::chrono::days{1}};
+            t -= std::chrono::days{1};
+        }
+
+        auto hms = std::chrono::hh_mm_ss{t};
+
+        if (len2 == 0) {
+            return fmt::format_to(ctx.out(), "{:04}-{:02}-{:02} {:02}:{:02}:{:02} {:+03}:{:02}",
+                             (int)d.year(), (unsigned int)d.month(), (unsigned int)d.day(),
+                             hms.hours().count(), hms.minutes().count(), hms.seconds().count(),
+                             dto.offset / 60, abs(dto.offset) % 60);
+        }
+
+        double s = (double)hms.seconds().count() + ((double)hms.subseconds().count() / 10000000.0);
+
+        return fmt::format_to(ctx.out(), "{:04}-{:02}-{:02} {:02}:{:02}:{:0{}.{}f} {:+03}:{:02}",
+                         (int)d.year(), (unsigned int)d.month(), (unsigned int)d.day(),
+                         hms.hours().count(), hms.minutes().count(),
+                         s, len2 + 3, len2,
+                         dto.offset / 60, abs(dto.offset) % 60);
+    }
+};
+#endif
 
 // tdscpp.cpp
 std::span<const uint8_t> parse_tokens(std::span<const uint8_t> sp, std::list<std::vector<uint8_t>>& tokens,

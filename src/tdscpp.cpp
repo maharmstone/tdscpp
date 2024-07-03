@@ -61,6 +61,8 @@ using namespace std;
 
 #define BROWSER_PORT 1434
 
+using fmtns::format;
+
 static const uint32_t tds_74_version = 0x4000074;
 
 static bool parse_row_col(enum tds::sql_type type, unsigned int max_length, span<const uint8_t>& sp,
@@ -938,7 +940,7 @@ void handle_row_col(tds::value_data_t& val, bool& is_null, enum tds::sql_type ty
 
 #ifdef HAVE_GSSAPI
 template<>
-struct std::formatter<enum krb5_minor> {
+struct fmtns::formatter<enum krb5_minor> {
     constexpr auto parse(format_parse_context& ctx) {
         auto it = ctx.begin();
 
@@ -952,775 +954,775 @@ struct std::formatter<enum krb5_minor> {
     auto format(enum krb5_minor t, format_context& ctx) const {
         switch (t) {
             case krb5_minor::KRB5KDC_ERR_NONE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_NONE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_NONE");
 
             case krb5_minor::KRB5KDC_ERR_NAME_EXP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_NAME_EXP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_NAME_EXP");
 
             case krb5_minor::KRB5KDC_ERR_SERVICE_EXP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_SERVICE_EXP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_SERVICE_EXP");
 
             case krb5_minor::KRB5KDC_ERR_BAD_PVNO:
-                return format_to(ctx.out(), "KRB5KDC_ERR_BAD_PVNO");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_BAD_PVNO");
 
             case krb5_minor::KRB5KDC_ERR_C_OLD_MAST_KVNO:
-                return format_to(ctx.out(), "KRB5KDC_ERR_C_OLD_MAST_KVNO");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_C_OLD_MAST_KVNO");
 
             case krb5_minor::KRB5KDC_ERR_S_OLD_MAST_KVNO:
-                return format_to(ctx.out(), "KRB5KDC_ERR_S_OLD_MAST_KVNO");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_S_OLD_MAST_KVNO");
 
             case krb5_minor::KRB5KDC_ERR_C_PRINCIPAL_UNKNOWN:
-                return format_to(ctx.out(), "KRB5KDC_ERR_C_PRINCIPAL_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_C_PRINCIPAL_UNKNOWN");
 
             case krb5_minor::KRB5KDC_ERR_S_PRINCIPAL_UNKNOWN:
-                return format_to(ctx.out(), "KRB5KDC_ERR_S_PRINCIPAL_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_S_PRINCIPAL_UNKNOWN");
 
             case krb5_minor::KRB5KDC_ERR_PRINCIPAL_NOT_UNIQUE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PRINCIPAL_NOT_UNIQUE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PRINCIPAL_NOT_UNIQUE");
 
             case krb5_minor::KRB5KDC_ERR_NULL_KEY:
-                return format_to(ctx.out(), "KRB5KDC_ERR_NULL_KEY");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_NULL_KEY");
 
             case krb5_minor::KRB5KDC_ERR_CANNOT_POSTDATE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CANNOT_POSTDATE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CANNOT_POSTDATE");
 
             case krb5_minor::KRB5KDC_ERR_NEVER_VALID:
-                return format_to(ctx.out(), "KRB5KDC_ERR_NEVER_VALID");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_NEVER_VALID");
 
             case krb5_minor::KRB5KDC_ERR_POLICY:
-                return format_to(ctx.out(), "KRB5KDC_ERR_POLICY");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_POLICY");
 
             case krb5_minor::KRB5KDC_ERR_BADOPTION:
-                return format_to(ctx.out(), "KRB5KDC_ERR_BADOPTION");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_BADOPTION");
 
             case krb5_minor::KRB5KDC_ERR_ETYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_ETYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_ETYPE_NOSUPP");
 
             case krb5_minor::KRB5KDC_ERR_SUMTYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_SUMTYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_SUMTYPE_NOSUPP");
 
             case krb5_minor::KRB5KDC_ERR_PADATA_TYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PADATA_TYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PADATA_TYPE_NOSUPP");
 
             case krb5_minor::KRB5KDC_ERR_TRTYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_TRTYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_TRTYPE_NOSUPP");
 
             case krb5_minor::KRB5KDC_ERR_CLIENT_REVOKED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_REVOKED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_REVOKED");
 
             case krb5_minor::KRB5KDC_ERR_SERVICE_REVOKED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_SERVICE_REVOKED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_SERVICE_REVOKED");
 
             case krb5_minor::KRB5KDC_ERR_TGT_REVOKED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_TGT_REVOKED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_TGT_REVOKED");
 
             case krb5_minor::KRB5KDC_ERR_CLIENT_NOTYET:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_NOTYET");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_NOTYET");
 
             case krb5_minor::KRB5KDC_ERR_SERVICE_NOTYET:
-                return format_to(ctx.out(), "KRB5KDC_ERR_SERVICE_NOTYET");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_SERVICE_NOTYET");
 
             case krb5_minor::KRB5KDC_ERR_KEY_EXP:
-                return format_to(ctx.out(), "KRB5KDC_ERR_KEY_EXP");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_KEY_EXP");
 
             case krb5_minor::KRB5KDC_ERR_PREAUTH_FAILED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PREAUTH_FAILED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PREAUTH_FAILED");
 
             case krb5_minor::KRB5KDC_ERR_PREAUTH_REQUIRED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PREAUTH_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PREAUTH_REQUIRED");
 
             case krb5_minor::KRB5KDC_ERR_SERVER_NOMATCH:
-                return format_to(ctx.out(), "KRB5KDC_ERR_SERVER_NOMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_SERVER_NOMATCH");
 
             case krb5_minor::KRB5KDC_ERR_MUST_USE_USER2USER:
-                return format_to(ctx.out(), "KRB5KDC_ERR_MUST_USE_USER2USER");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_MUST_USE_USER2USER");
 
             case krb5_minor::KRB5KDC_ERR_PATH_NOT_ACCEPTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PATH_NOT_ACCEPTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PATH_NOT_ACCEPTED");
 
             case krb5_minor::KRB5KDC_ERR_SVC_UNAVAILABLE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_SVC_UNAVAILABLE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_SVC_UNAVAILABLE");
 
             case krb5_minor::KRB5PLACEHOLD_30:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_30");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_30");
 
             case krb5_minor::KRB5KRB_AP_ERR_BAD_INTEGRITY:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BAD_INTEGRITY");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BAD_INTEGRITY");
 
             case krb5_minor::KRB5KRB_AP_ERR_TKT_EXPIRED:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_TKT_EXPIRED");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_TKT_EXPIRED");
 
             case krb5_minor::KRB5KRB_AP_ERR_TKT_NYV:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_TKT_NYV");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_TKT_NYV");
 
             case krb5_minor::KRB5KRB_AP_ERR_REPEAT:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_REPEAT");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_REPEAT");
 
             case krb5_minor::KRB5KRB_AP_ERR_NOT_US:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_NOT_US");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_NOT_US");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADMATCH:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADMATCH");
 
             case krb5_minor::KRB5KRB_AP_ERR_SKEW:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_SKEW");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_SKEW");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADADDR:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADADDR");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADADDR");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADVERSION:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADVERSION");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADVERSION");
 
             case krb5_minor::KRB5KRB_AP_ERR_MSG_TYPE:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_MSG_TYPE");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_MSG_TYPE");
 
             case krb5_minor::KRB5KRB_AP_ERR_MODIFIED:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_MODIFIED");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_MODIFIED");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADORDER:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADORDER");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADORDER");
 
             case krb5_minor::KRB5KRB_AP_ERR_ILL_CR_TKT:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_ILL_CR_TKT");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_ILL_CR_TKT");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADKEYVER:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADKEYVER");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADKEYVER");
 
             case krb5_minor::KRB5KRB_AP_ERR_NOKEY:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_NOKEY");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_NOKEY");
 
             case krb5_minor::KRB5KRB_AP_ERR_MUT_FAIL:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_MUT_FAIL");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_MUT_FAIL");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADDIRECTION:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADDIRECTION");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADDIRECTION");
 
             case krb5_minor::KRB5KRB_AP_ERR_METHOD:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_METHOD");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_METHOD");
 
             case krb5_minor::KRB5KRB_AP_ERR_BADSEQ:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_BADSEQ");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_BADSEQ");
 
             case krb5_minor::KRB5KRB_AP_ERR_INAPP_CKSUM:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_INAPP_CKSUM");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_INAPP_CKSUM");
 
             case krb5_minor::KRB5KRB_AP_PATH_NOT_ACCEPTED:
-                return format_to(ctx.out(), "KRB5KRB_AP_PATH_NOT_ACCEPTED");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_PATH_NOT_ACCEPTED");
 
             case krb5_minor::KRB5KRB_ERR_RESPONSE_TOO_BIG:
-                return format_to(ctx.out(), "KRB5KRB_ERR_RESPONSE_TOO_BIG");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_ERR_RESPONSE_TOO_BIG");
 
             case krb5_minor::KRB5PLACEHOLD_53:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_53");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_53");
 
             case krb5_minor::KRB5PLACEHOLD_54:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_54");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_54");
 
             case krb5_minor::KRB5PLACEHOLD_55:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_55");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_55");
 
             case krb5_minor::KRB5PLACEHOLD_56:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_56");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_56");
 
             case krb5_minor::KRB5PLACEHOLD_57:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_57");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_57");
 
             case krb5_minor::KRB5PLACEHOLD_58:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_58");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_58");
 
             case krb5_minor::KRB5PLACEHOLD_59:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_59");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_59");
 
             case krb5_minor::KRB5KRB_ERR_GENERIC:
-                return format_to(ctx.out(), "KRB5KRB_ERR_GENERIC");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_ERR_GENERIC");
 
             case krb5_minor::KRB5KRB_ERR_FIELD_TOOLONG:
-                return format_to(ctx.out(), "KRB5KRB_ERR_FIELD_TOOLONG");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_ERR_FIELD_TOOLONG");
 
             case krb5_minor::KRB5KDC_ERR_CLIENT_NOT_TRUSTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_NOT_TRUSTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_NOT_TRUSTED");
 
             case krb5_minor::KRB5KDC_ERR_KDC_NOT_TRUSTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_KDC_NOT_TRUSTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_KDC_NOT_TRUSTED");
 
             case krb5_minor::KRB5KDC_ERR_INVALID_SIG:
-                return format_to(ctx.out(), "KRB5KDC_ERR_INVALID_SIG");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_INVALID_SIG");
 
             case krb5_minor::KRB5KDC_ERR_DH_KEY_PARAMETERS_NOT_ACCEPTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_DH_KEY_PARAMETERS_NOT_ACCEPTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_DH_KEY_PARAMETERS_NOT_ACCEPTED");
 
             case krb5_minor::KRB5KDC_ERR_CERTIFICATE_MISMATCH:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CERTIFICATE_MISMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CERTIFICATE_MISMATCH");
 
             case krb5_minor::KRB5KRB_AP_ERR_NO_TGT:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_NO_TGT");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_NO_TGT");
 
             case krb5_minor::KRB5KDC_ERR_WRONG_REALM:
-                return format_to(ctx.out(), "KRB5KDC_ERR_WRONG_REALM");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_WRONG_REALM");
 
             case krb5_minor::KRB5KRB_AP_ERR_USER_TO_USER_REQUIRED:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_USER_TO_USER_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_USER_TO_USER_REQUIRED");
 
             case krb5_minor::KRB5KDC_ERR_CANT_VERIFY_CERTIFICATE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CANT_VERIFY_CERTIFICATE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CANT_VERIFY_CERTIFICATE");
 
             case krb5_minor::KRB5KDC_ERR_INVALID_CERTIFICATE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_INVALID_CERTIFICATE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_INVALID_CERTIFICATE");
 
             case krb5_minor::KRB5KDC_ERR_REVOKED_CERTIFICATE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_REVOKED_CERTIFICATE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_REVOKED_CERTIFICATE");
 
             case krb5_minor::KRB5KDC_ERR_REVOCATION_STATUS_UNKNOWN:
-                return format_to(ctx.out(), "KRB5KDC_ERR_REVOCATION_STATUS_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_REVOCATION_STATUS_UNKNOWN");
 
             case krb5_minor::KRB5KDC_ERR_REVOCATION_STATUS_UNAVAILABLE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_REVOCATION_STATUS_UNAVAILABLE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_REVOCATION_STATUS_UNAVAILABLE");
 
             case krb5_minor::KRB5KDC_ERR_CLIENT_NAME_MISMATCH:
-                return format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_NAME_MISMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_CLIENT_NAME_MISMATCH");
 
             case krb5_minor::KRB5KDC_ERR_KDC_NAME_MISMATCH:
-                return format_to(ctx.out(), "KRB5KDC_ERR_KDC_NAME_MISMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_KDC_NAME_MISMATCH");
 
             case krb5_minor::KRB5KDC_ERR_INCONSISTENT_KEY_PURPOSE:
-                return format_to(ctx.out(), "KRB5KDC_ERR_INCONSISTENT_KEY_PURPOSE");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_INCONSISTENT_KEY_PURPOSE");
 
             case krb5_minor::KRB5KDC_ERR_DIGEST_IN_CERT_NOT_ACCEPTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_DIGEST_IN_CERT_NOT_ACCEPTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_DIGEST_IN_CERT_NOT_ACCEPTED");
 
             case krb5_minor::KRB5KDC_ERR_PA_CHECKSUM_MUST_BE_INCLUDED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PA_CHECKSUM_MUST_BE_INCLUDED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PA_CHECKSUM_MUST_BE_INCLUDED");
 
             case krb5_minor::KRB5KDC_ERR_DIGEST_IN_SIGNED_DATA_NOT_ACCEPTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_DIGEST_IN_SIGNED_DATA_NOT_ACCEPTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_DIGEST_IN_SIGNED_DATA_NOT_ACCEPTED");
 
             case krb5_minor::KRB5KDC_ERR_PUBLIC_KEY_ENCRYPTION_NOT_SUPPORTED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PUBLIC_KEY_ENCRYPTION_NOT_SUPPORTED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PUBLIC_KEY_ENCRYPTION_NOT_SUPPORTED");
 
             case krb5_minor::KRB5PLACEHOLD_82:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_82");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_82");
 
             case krb5_minor::KRB5PLACEHOLD_83:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_83");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_83");
 
             case krb5_minor::KRB5PLACEHOLD_84:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_84");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_84");
 
             case krb5_minor::KRB5KRB_AP_ERR_IAKERB_KDC_NOT_FOUND:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_IAKERB_KDC_NOT_FOUND");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_IAKERB_KDC_NOT_FOUND");
 
             case krb5_minor::KRB5KRB_AP_ERR_IAKERB_KDC_NO_RESPONSE:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_IAKERB_KDC_NO_RESPONSE");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_IAKERB_KDC_NO_RESPONSE");
 
             case krb5_minor::KRB5PLACEHOLD_87:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_87");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_87");
 
             case krb5_minor::KRB5PLACEHOLD_88:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_88");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_88");
 
             case krb5_minor::KRB5PLACEHOLD_89:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_89");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_89");
 
             case krb5_minor::KRB5KDC_ERR_PREAUTH_EXPIRED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_PREAUTH_EXPIRED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_PREAUTH_EXPIRED");
 
             case krb5_minor::KRB5KDC_ERR_MORE_PREAUTH_DATA_REQUIRED:
-                return format_to(ctx.out(), "KRB5KDC_ERR_MORE_PREAUTH_DATA_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_MORE_PREAUTH_DATA_REQUIRED");
 
             case krb5_minor::KRB5PLACEHOLD_92:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_92");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_92");
 
             case krb5_minor::KRB5KDC_ERR_UNKNOWN_CRITICAL_FAST_OPTION:
-                return format_to(ctx.out(), "KRB5KDC_ERR_UNKNOWN_CRITICAL_FAST_OPTION");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_UNKNOWN_CRITICAL_FAST_OPTION");
 
             case krb5_minor::KRB5PLACEHOLD_94:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_94");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_94");
 
             case krb5_minor::KRB5PLACEHOLD_95:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_95");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_95");
 
             case krb5_minor::KRB5PLACEHOLD_96:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_96");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_96");
 
             case krb5_minor::KRB5PLACEHOLD_97:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_97");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_97");
 
             case krb5_minor::KRB5PLACEHOLD_98:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_98");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_98");
 
             case krb5_minor::KRB5PLACEHOLD_99:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_99");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_99");
 
             case krb5_minor::KRB5KDC_ERR_NO_ACCEPTABLE_KDF:
-                return format_to(ctx.out(), "KRB5KDC_ERR_NO_ACCEPTABLE_KDF");
+                return fmtns::format_to(ctx.out(), "KRB5KDC_ERR_NO_ACCEPTABLE_KDF");
 
             case krb5_minor::KRB5PLACEHOLD_101:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_101");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_101");
 
             case krb5_minor::KRB5PLACEHOLD_102:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_102");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_102");
 
             case krb5_minor::KRB5PLACEHOLD_103:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_103");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_103");
 
             case krb5_minor::KRB5PLACEHOLD_104:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_104");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_104");
 
             case krb5_minor::KRB5PLACEHOLD_105:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_105");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_105");
 
             case krb5_minor::KRB5PLACEHOLD_106:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_106");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_106");
 
             case krb5_minor::KRB5PLACEHOLD_107:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_107");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_107");
 
             case krb5_minor::KRB5PLACEHOLD_108:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_108");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_108");
 
             case krb5_minor::KRB5PLACEHOLD_109:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_109");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_109");
 
             case krb5_minor::KRB5PLACEHOLD_110:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_110");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_110");
 
             case krb5_minor::KRB5PLACEHOLD_111:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_111");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_111");
 
             case krb5_minor::KRB5PLACEHOLD_112:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_112");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_112");
 
             case krb5_minor::KRB5PLACEHOLD_113:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_113");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_113");
 
             case krb5_minor::KRB5PLACEHOLD_114:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_114");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_114");
 
             case krb5_minor::KRB5PLACEHOLD_115:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_115");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_115");
 
             case krb5_minor::KRB5PLACEHOLD_116:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_116");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_116");
 
             case krb5_minor::KRB5PLACEHOLD_117:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_117");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_117");
 
             case krb5_minor::KRB5PLACEHOLD_118:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_118");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_118");
 
             case krb5_minor::KRB5PLACEHOLD_119:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_119");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_119");
 
             case krb5_minor::KRB5PLACEHOLD_120:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_120");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_120");
 
             case krb5_minor::KRB5PLACEHOLD_121:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_121");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_121");
 
             case krb5_minor::KRB5PLACEHOLD_122:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_122");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_122");
 
             case krb5_minor::KRB5PLACEHOLD_123:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_123");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_123");
 
             case krb5_minor::KRB5PLACEHOLD_124:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_124");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_124");
 
             case krb5_minor::KRB5PLACEHOLD_125:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_125");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_125");
 
             case krb5_minor::KRB5PLACEHOLD_126:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_126");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_126");
 
             case krb5_minor::KRB5PLACEHOLD_127:
-                return format_to(ctx.out(), "KRB5PLACEHOLD_127");
+                return fmtns::format_to(ctx.out(), "KRB5PLACEHOLD_127");
 
             case krb5_minor::KRB5_ERR_RCSID:
-                return format_to(ctx.out(), "KRB5_ERR_RCSID");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_RCSID");
 
             case krb5_minor::KRB5_LIBOS_BADLOCKFLAG:
-                return format_to(ctx.out(), "KRB5_LIBOS_BADLOCKFLAG");
+                return fmtns::format_to(ctx.out(), "KRB5_LIBOS_BADLOCKFLAG");
 
             case krb5_minor::KRB5_LIBOS_CANTREADPWD:
-                return format_to(ctx.out(), "KRB5_LIBOS_CANTREADPWD");
+                return fmtns::format_to(ctx.out(), "KRB5_LIBOS_CANTREADPWD");
 
             case krb5_minor::KRB5_LIBOS_BADPWDMATCH:
-                return format_to(ctx.out(), "KRB5_LIBOS_BADPWDMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5_LIBOS_BADPWDMATCH");
 
             case krb5_minor::KRB5_LIBOS_PWDINTR:
-                return format_to(ctx.out(), "KRB5_LIBOS_PWDINTR");
+                return fmtns::format_to(ctx.out(), "KRB5_LIBOS_PWDINTR");
 
             case krb5_minor::KRB5_PARSE_ILLCHAR:
-                return format_to(ctx.out(), "KRB5_PARSE_ILLCHAR");
+                return fmtns::format_to(ctx.out(), "KRB5_PARSE_ILLCHAR");
 
             case krb5_minor::KRB5_PARSE_MALFORMED:
-                return format_to(ctx.out(), "KRB5_PARSE_MALFORMED");
+                return fmtns::format_to(ctx.out(), "KRB5_PARSE_MALFORMED");
 
             case krb5_minor::KRB5_CONFIG_CANTOPEN:
-                return format_to(ctx.out(), "KRB5_CONFIG_CANTOPEN");
+                return fmtns::format_to(ctx.out(), "KRB5_CONFIG_CANTOPEN");
 
             case krb5_minor::KRB5_CONFIG_BADFORMAT:
-                return format_to(ctx.out(), "KRB5_CONFIG_BADFORMAT");
+                return fmtns::format_to(ctx.out(), "KRB5_CONFIG_BADFORMAT");
 
             case krb5_minor::KRB5_CONFIG_NOTENUFSPACE:
-                return format_to(ctx.out(), "KRB5_CONFIG_NOTENUFSPACE");
+                return fmtns::format_to(ctx.out(), "KRB5_CONFIG_NOTENUFSPACE");
 
             case krb5_minor::KRB5_BADMSGTYPE:
-                return format_to(ctx.out(), "KRB5_BADMSGTYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_BADMSGTYPE");
 
             case krb5_minor::KRB5_CC_BADNAME:
-                return format_to(ctx.out(), "KRB5_CC_BADNAME");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_BADNAME");
 
             case krb5_minor::KRB5_CC_UNKNOWN_TYPE:
-                return format_to(ctx.out(), "KRB5_CC_UNKNOWN_TYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_UNKNOWN_TYPE");
 
             case krb5_minor::KRB5_CC_NOTFOUND:
-                return format_to(ctx.out(), "KRB5_CC_NOTFOUND");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_NOTFOUND");
 
             case krb5_minor::KRB5_CC_END:
-                return format_to(ctx.out(), "KRB5_CC_END");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_END");
 
             case krb5_minor::KRB5_NO_TKT_SUPPLIED:
-                return format_to(ctx.out(), "KRB5_NO_TKT_SUPPLIED");
+                return fmtns::format_to(ctx.out(), "KRB5_NO_TKT_SUPPLIED");
 
             case krb5_minor::KRB5KRB_AP_WRONG_PRINC:
-                return format_to(ctx.out(), "KRB5KRB_AP_WRONG_PRINC");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_WRONG_PRINC");
 
             case krb5_minor::KRB5KRB_AP_ERR_TKT_INVALID:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_TKT_INVALID");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_TKT_INVALID");
 
             case krb5_minor::KRB5_PRINC_NOMATCH:
-                return format_to(ctx.out(), "KRB5_PRINC_NOMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5_PRINC_NOMATCH");
 
             case krb5_minor::KRB5_KDCREP_MODIFIED:
-                return format_to(ctx.out(), "KRB5_KDCREP_MODIFIED");
+                return fmtns::format_to(ctx.out(), "KRB5_KDCREP_MODIFIED");
 
             case krb5_minor::KRB5_KDCREP_SKEW:
-                return format_to(ctx.out(), "KRB5_KDCREP_SKEW");
+                return fmtns::format_to(ctx.out(), "KRB5_KDCREP_SKEW");
 
             case krb5_minor::KRB5_IN_TKT_REALM_MISMATCH:
-                return format_to(ctx.out(), "KRB5_IN_TKT_REALM_MISMATCH");
+                return fmtns::format_to(ctx.out(), "KRB5_IN_TKT_REALM_MISMATCH");
 
             case krb5_minor::KRB5_PROG_ETYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5_PROG_ETYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_PROG_ETYPE_NOSUPP");
 
             case krb5_minor::KRB5_PROG_KEYTYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5_PROG_KEYTYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_PROG_KEYTYPE_NOSUPP");
 
             case krb5_minor::KRB5_WRONG_ETYPE:
-                return format_to(ctx.out(), "KRB5_WRONG_ETYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_WRONG_ETYPE");
 
             case krb5_minor::KRB5_PROG_SUMTYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5_PROG_SUMTYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_PROG_SUMTYPE_NOSUPP");
 
             case krb5_minor::KRB5_REALM_UNKNOWN:
-                return format_to(ctx.out(), "KRB5_REALM_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5_REALM_UNKNOWN");
 
             case krb5_minor::KRB5_SERVICE_UNKNOWN:
-                return format_to(ctx.out(), "KRB5_SERVICE_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5_SERVICE_UNKNOWN");
 
             case krb5_minor::KRB5_KDC_UNREACH:
-                return format_to(ctx.out(), "KRB5_KDC_UNREACH");
+                return fmtns::format_to(ctx.out(), "KRB5_KDC_UNREACH");
 
             case krb5_minor::KRB5_NO_LOCALNAME:
-                return format_to(ctx.out(), "KRB5_NO_LOCALNAME");
+                return fmtns::format_to(ctx.out(), "KRB5_NO_LOCALNAME");
 
             case krb5_minor::KRB5_MUTUAL_FAILED:
-                return format_to(ctx.out(), "KRB5_MUTUAL_FAILED");
+                return fmtns::format_to(ctx.out(), "KRB5_MUTUAL_FAILED");
 
             case krb5_minor::KRB5_RC_TYPE_EXISTS:
-                return format_to(ctx.out(), "KRB5_RC_TYPE_EXISTS");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_TYPE_EXISTS");
 
             case krb5_minor::KRB5_RC_MALLOC:
-                return format_to(ctx.out(), "KRB5_RC_MALLOC");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_MALLOC");
 
             case krb5_minor::KRB5_RC_TYPE_NOTFOUND:
-                return format_to(ctx.out(), "KRB5_RC_TYPE_NOTFOUND");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_TYPE_NOTFOUND");
 
             case krb5_minor::KRB5_RC_UNKNOWN:
-                return format_to(ctx.out(), "KRB5_RC_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_UNKNOWN");
 
             case krb5_minor::KRB5_RC_REPLAY:
-                return format_to(ctx.out(), "KRB5_RC_REPLAY");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_REPLAY");
 
             case krb5_minor::KRB5_RC_IO:
-                return format_to(ctx.out(), "KRB5_RC_IO");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO");
 
             case krb5_minor::KRB5_RC_NOIO:
-                return format_to(ctx.out(), "KRB5_RC_NOIO");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_NOIO");
 
             case krb5_minor::KRB5_RC_PARSE:
-                return format_to(ctx.out(), "KRB5_RC_PARSE");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_PARSE");
 
             case krb5_minor::KRB5_RC_IO_EOF:
-                return format_to(ctx.out(), "KRB5_RC_IO_EOF");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO_EOF");
 
             case krb5_minor::KRB5_RC_IO_MALLOC:
-                return format_to(ctx.out(), "KRB5_RC_IO_MALLOC");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO_MALLOC");
 
             case krb5_minor::KRB5_RC_IO_PERM:
-                return format_to(ctx.out(), "KRB5_RC_IO_PERM");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO_PERM");
 
             case krb5_minor::KRB5_RC_IO_IO:
-                return format_to(ctx.out(), "KRB5_RC_IO_IO");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO_IO");
 
             case krb5_minor::KRB5_RC_IO_UNKNOWN:
-                return format_to(ctx.out(), "KRB5_RC_IO_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO_UNKNOWN");
 
             case krb5_minor::KRB5_RC_IO_SPACE:
-                return format_to(ctx.out(), "KRB5_RC_IO_SPACE");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_IO_SPACE");
 
             case krb5_minor::KRB5_TRANS_CANTOPEN:
-                return format_to(ctx.out(), "KRB5_TRANS_CANTOPEN");
+                return fmtns::format_to(ctx.out(), "KRB5_TRANS_CANTOPEN");
 
             case krb5_minor::KRB5_TRANS_BADFORMAT:
-                return format_to(ctx.out(), "KRB5_TRANS_BADFORMAT");
+                return fmtns::format_to(ctx.out(), "KRB5_TRANS_BADFORMAT");
 
             case krb5_minor::KRB5_LNAME_CANTOPEN:
-                return format_to(ctx.out(), "KRB5_LNAME_CANTOPEN");
+                return fmtns::format_to(ctx.out(), "KRB5_LNAME_CANTOPEN");
 
             case krb5_minor::KRB5_LNAME_NOTRANS:
-                return format_to(ctx.out(), "KRB5_LNAME_NOTRANS");
+                return fmtns::format_to(ctx.out(), "KRB5_LNAME_NOTRANS");
 
             case krb5_minor::KRB5_LNAME_BADFORMAT:
-                return format_to(ctx.out(), "KRB5_LNAME_BADFORMAT");
+                return fmtns::format_to(ctx.out(), "KRB5_LNAME_BADFORMAT");
 
             case krb5_minor::KRB5_CRYPTO_INTERNAL:
-                return format_to(ctx.out(), "KRB5_CRYPTO_INTERNAL");
+                return fmtns::format_to(ctx.out(), "KRB5_CRYPTO_INTERNAL");
 
             case krb5_minor::KRB5_KT_BADNAME:
-                return format_to(ctx.out(), "KRB5_KT_BADNAME");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_BADNAME");
 
             case krb5_minor::KRB5_KT_UNKNOWN_TYPE:
-                return format_to(ctx.out(), "KRB5_KT_UNKNOWN_TYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_UNKNOWN_TYPE");
 
             case krb5_minor::KRB5_KT_NOTFOUND:
-                return format_to(ctx.out(), "KRB5_KT_NOTFOUND");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_NOTFOUND");
 
             case krb5_minor::KRB5_KT_END:
-                return format_to(ctx.out(), "KRB5_KT_END");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_END");
 
             case krb5_minor::KRB5_KT_NOWRITE:
-                return format_to(ctx.out(), "KRB5_KT_NOWRITE");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_NOWRITE");
 
             case krb5_minor::KRB5_KT_IOERR:
-                return format_to(ctx.out(), "KRB5_KT_IOERR");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_IOERR");
 
             case krb5_minor::KRB5_NO_TKT_IN_RLM:
-                return format_to(ctx.out(), "KRB5_NO_TKT_IN_RLM");
+                return fmtns::format_to(ctx.out(), "KRB5_NO_TKT_IN_RLM");
 
             case krb5_minor::KRB5DES_BAD_KEYPAR:
-                return format_to(ctx.out(), "KRB5DES_BAD_KEYPAR");
+                return fmtns::format_to(ctx.out(), "KRB5DES_BAD_KEYPAR");
 
             case krb5_minor::KRB5DES_WEAK_KEY:
-                return format_to(ctx.out(), "KRB5DES_WEAK_KEY");
+                return fmtns::format_to(ctx.out(), "KRB5DES_WEAK_KEY");
 
             case krb5_minor::KRB5_BAD_ENCTYPE:
-                return format_to(ctx.out(), "KRB5_BAD_ENCTYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_BAD_ENCTYPE");
 
             case krb5_minor::KRB5_BAD_KEYSIZE:
-                return format_to(ctx.out(), "KRB5_BAD_KEYSIZE");
+                return fmtns::format_to(ctx.out(), "KRB5_BAD_KEYSIZE");
 
             case krb5_minor::KRB5_BAD_MSIZE:
-                return format_to(ctx.out(), "KRB5_BAD_MSIZE");
+                return fmtns::format_to(ctx.out(), "KRB5_BAD_MSIZE");
 
             case krb5_minor::KRB5_CC_TYPE_EXISTS:
-                return format_to(ctx.out(), "KRB5_CC_TYPE_EXISTS");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_TYPE_EXISTS");
 
             case krb5_minor::KRB5_KT_TYPE_EXISTS:
-                return format_to(ctx.out(), "KRB5_KT_TYPE_EXISTS");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_TYPE_EXISTS");
 
             case krb5_minor::KRB5_CC_IO:
-                return format_to(ctx.out(), "KRB5_CC_IO");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_IO");
 
             case krb5_minor::KRB5_FCC_PERM:
-                return format_to(ctx.out(), "KRB5_FCC_PERM");
+                return fmtns::format_to(ctx.out(), "KRB5_FCC_PERM");
 
             case krb5_minor::KRB5_FCC_NOFILE:
-                return format_to(ctx.out(), "KRB5_FCC_NOFILE");
+                return fmtns::format_to(ctx.out(), "KRB5_FCC_NOFILE");
 
             case krb5_minor::KRB5_FCC_INTERNAL:
-                return format_to(ctx.out(), "KRB5_FCC_INTERNAL");
+                return fmtns::format_to(ctx.out(), "KRB5_FCC_INTERNAL");
 
             case krb5_minor::KRB5_CC_WRITE:
-                return format_to(ctx.out(), "KRB5_CC_WRITE");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_WRITE");
 
             case krb5_minor::KRB5_CC_NOMEM:
-                return format_to(ctx.out(), "KRB5_CC_NOMEM");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_NOMEM");
 
             case krb5_minor::KRB5_CC_FORMAT:
-                return format_to(ctx.out(), "KRB5_CC_FORMAT");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_FORMAT");
 
             case krb5_minor::KRB5_CC_NOT_KTYPE:
-                return format_to(ctx.out(), "KRB5_CC_NOT_KTYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_NOT_KTYPE");
 
             case krb5_minor::KRB5_INVALID_FLAGS:
-                return format_to(ctx.out(), "KRB5_INVALID_FLAGS");
+                return fmtns::format_to(ctx.out(), "KRB5_INVALID_FLAGS");
 
             case krb5_minor::KRB5_NO_2ND_TKT:
-                return format_to(ctx.out(), "KRB5_NO_2ND_TKT");
+                return fmtns::format_to(ctx.out(), "KRB5_NO_2ND_TKT");
 
             case krb5_minor::KRB5_NOCREDS_SUPPLIED:
-                return format_to(ctx.out(), "KRB5_NOCREDS_SUPPLIED");
+                return fmtns::format_to(ctx.out(), "KRB5_NOCREDS_SUPPLIED");
 
             case krb5_minor::KRB5_SENDAUTH_BADAUTHVERS:
-                return format_to(ctx.out(), "KRB5_SENDAUTH_BADAUTHVERS");
+                return fmtns::format_to(ctx.out(), "KRB5_SENDAUTH_BADAUTHVERS");
 
             case krb5_minor::KRB5_SENDAUTH_BADAPPLVERS:
-                return format_to(ctx.out(), "KRB5_SENDAUTH_BADAPPLVERS");
+                return fmtns::format_to(ctx.out(), "KRB5_SENDAUTH_BADAPPLVERS");
 
             case krb5_minor::KRB5_SENDAUTH_BADRESPONSE:
-                return format_to(ctx.out(), "KRB5_SENDAUTH_BADRESPONSE");
+                return fmtns::format_to(ctx.out(), "KRB5_SENDAUTH_BADRESPONSE");
 
             case krb5_minor::KRB5_SENDAUTH_REJECTED:
-                return format_to(ctx.out(), "KRB5_SENDAUTH_REJECTED");
+                return fmtns::format_to(ctx.out(), "KRB5_SENDAUTH_REJECTED");
 
             case krb5_minor::KRB5_PREAUTH_BAD_TYPE:
-                return format_to(ctx.out(), "KRB5_PREAUTH_BAD_TYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_PREAUTH_BAD_TYPE");
 
             case krb5_minor::KRB5_PREAUTH_NO_KEY:
-                return format_to(ctx.out(), "KRB5_PREAUTH_NO_KEY");
+                return fmtns::format_to(ctx.out(), "KRB5_PREAUTH_NO_KEY");
 
             case krb5_minor::KRB5_PREAUTH_FAILED:
-                return format_to(ctx.out(), "KRB5_PREAUTH_FAILED");
+                return fmtns::format_to(ctx.out(), "KRB5_PREAUTH_FAILED");
 
             case krb5_minor::KRB5_RCACHE_BADVNO:
-                return format_to(ctx.out(), "KRB5_RCACHE_BADVNO");
+                return fmtns::format_to(ctx.out(), "KRB5_RCACHE_BADVNO");
 
             case krb5_minor::KRB5_CCACHE_BADVNO:
-                return format_to(ctx.out(), "KRB5_CCACHE_BADVNO");
+                return fmtns::format_to(ctx.out(), "KRB5_CCACHE_BADVNO");
 
             case krb5_minor::KRB5_KEYTAB_BADVNO:
-                return format_to(ctx.out(), "KRB5_KEYTAB_BADVNO");
+                return fmtns::format_to(ctx.out(), "KRB5_KEYTAB_BADVNO");
 
             case krb5_minor::KRB5_PROG_ATYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5_PROG_ATYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_PROG_ATYPE_NOSUPP");
 
             case krb5_minor::KRB5_RC_REQUIRED:
-                return format_to(ctx.out(), "KRB5_RC_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5_RC_REQUIRED");
 
             case krb5_minor::KRB5_ERR_BAD_HOSTNAME:
-                return format_to(ctx.out(), "KRB5_ERR_BAD_HOSTNAME");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_BAD_HOSTNAME");
 
             case krb5_minor::KRB5_ERR_HOST_REALM_UNKNOWN:
-                return format_to(ctx.out(), "KRB5_ERR_HOST_REALM_UNKNOWN");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_HOST_REALM_UNKNOWN");
 
             case krb5_minor::KRB5_SNAME_UNSUPP_NAMETYPE:
-                return format_to(ctx.out(), "KRB5_SNAME_UNSUPP_NAMETYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_SNAME_UNSUPP_NAMETYPE");
 
             case krb5_minor::KRB5KRB_AP_ERR_V4_REPLY:
-                return format_to(ctx.out(), "KRB5KRB_AP_ERR_V4_REPLY");
+                return fmtns::format_to(ctx.out(), "KRB5KRB_AP_ERR_V4_REPLY");
 
             case krb5_minor::KRB5_REALM_CANT_RESOLVE:
-                return format_to(ctx.out(), "KRB5_REALM_CANT_RESOLVE");
+                return fmtns::format_to(ctx.out(), "KRB5_REALM_CANT_RESOLVE");
 
             case krb5_minor::KRB5_TKT_NOT_FORWARDABLE:
-                return format_to(ctx.out(), "KRB5_TKT_NOT_FORWARDABLE");
+                return fmtns::format_to(ctx.out(), "KRB5_TKT_NOT_FORWARDABLE");
 
             case krb5_minor::KRB5_FWD_BAD_PRINCIPAL:
-                return format_to(ctx.out(), "KRB5_FWD_BAD_PRINCIPAL");
+                return fmtns::format_to(ctx.out(), "KRB5_FWD_BAD_PRINCIPAL");
 
             case krb5_minor::KRB5_GET_IN_TKT_LOOP:
-                return format_to(ctx.out(), "KRB5_GET_IN_TKT_LOOP");
+                return fmtns::format_to(ctx.out(), "KRB5_GET_IN_TKT_LOOP");
 
             case krb5_minor::KRB5_CONFIG_NODEFREALM:
-                return format_to(ctx.out(), "KRB5_CONFIG_NODEFREALM");
+                return fmtns::format_to(ctx.out(), "KRB5_CONFIG_NODEFREALM");
 
             case krb5_minor::KRB5_SAM_UNSUPPORTED:
-                return format_to(ctx.out(), "KRB5_SAM_UNSUPPORTED");
+                return fmtns::format_to(ctx.out(), "KRB5_SAM_UNSUPPORTED");
 
             case krb5_minor::KRB5_SAM_INVALID_ETYPE:
-                return format_to(ctx.out(), "KRB5_SAM_INVALID_ETYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_SAM_INVALID_ETYPE");
 
             case krb5_minor::KRB5_SAM_NO_CHECKSUM:
-                return format_to(ctx.out(), "KRB5_SAM_NO_CHECKSUM");
+                return fmtns::format_to(ctx.out(), "KRB5_SAM_NO_CHECKSUM");
 
             case krb5_minor::KRB5_SAM_BAD_CHECKSUM:
-                return format_to(ctx.out(), "KRB5_SAM_BAD_CHECKSUM");
+                return fmtns::format_to(ctx.out(), "KRB5_SAM_BAD_CHECKSUM");
 
             case krb5_minor::KRB5_KT_NAME_TOOLONG:
-                return format_to(ctx.out(), "KRB5_KT_NAME_TOOLONG");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_NAME_TOOLONG");
 
             case krb5_minor::KRB5_KT_KVNONOTFOUND:
-                return format_to(ctx.out(), "KRB5_KT_KVNONOTFOUND");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_KVNONOTFOUND");
 
             case krb5_minor::KRB5_APPL_EXPIRED:
-                return format_to(ctx.out(), "KRB5_APPL_EXPIRED");
+                return fmtns::format_to(ctx.out(), "KRB5_APPL_EXPIRED");
 
             case krb5_minor::KRB5_LIB_EXPIRED:
-                return format_to(ctx.out(), "KRB5_LIB_EXPIRED");
+                return fmtns::format_to(ctx.out(), "KRB5_LIB_EXPIRED");
 
             case krb5_minor::KRB5_CHPW_PWDNULL:
-                return format_to(ctx.out(), "KRB5_CHPW_PWDNULL");
+                return fmtns::format_to(ctx.out(), "KRB5_CHPW_PWDNULL");
 
             case krb5_minor::KRB5_CHPW_FAIL:
-                return format_to(ctx.out(), "KRB5_CHPW_FAIL");
+                return fmtns::format_to(ctx.out(), "KRB5_CHPW_FAIL");
 
             case krb5_minor::KRB5_KT_FORMAT:
-                return format_to(ctx.out(), "KRB5_KT_FORMAT");
+                return fmtns::format_to(ctx.out(), "KRB5_KT_FORMAT");
 
             case krb5_minor::KRB5_NOPERM_ETYPE:
-                return format_to(ctx.out(), "KRB5_NOPERM_ETYPE");
+                return fmtns::format_to(ctx.out(), "KRB5_NOPERM_ETYPE");
 
             case krb5_minor::KRB5_CONFIG_ETYPE_NOSUPP:
-                return format_to(ctx.out(), "KRB5_CONFIG_ETYPE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_CONFIG_ETYPE_NOSUPP");
 
             case krb5_minor::KRB5_OBSOLETE_FN:
-                return format_to(ctx.out(), "KRB5_OBSOLETE_FN");
+                return fmtns::format_to(ctx.out(), "KRB5_OBSOLETE_FN");
 
             case krb5_minor::KRB5_EAI_FAIL:
-                return format_to(ctx.out(), "KRB5_EAI_FAIL");
+                return fmtns::format_to(ctx.out(), "KRB5_EAI_FAIL");
 
             case krb5_minor::KRB5_EAI_NODATA:
-                return format_to(ctx.out(), "KRB5_EAI_NODATA");
+                return fmtns::format_to(ctx.out(), "KRB5_EAI_NODATA");
 
             case krb5_minor::KRB5_EAI_NONAME:
-                return format_to(ctx.out(), "KRB5_EAI_NONAME");
+                return fmtns::format_to(ctx.out(), "KRB5_EAI_NONAME");
 
             case krb5_minor::KRB5_EAI_SERVICE:
-                return format_to(ctx.out(), "KRB5_EAI_SERVICE");
+                return fmtns::format_to(ctx.out(), "KRB5_EAI_SERVICE");
 
             case krb5_minor::KRB5_ERR_NUMERIC_REALM:
-                return format_to(ctx.out(), "KRB5_ERR_NUMERIC_REALM");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_NUMERIC_REALM");
 
             case krb5_minor::KRB5_ERR_BAD_S2K_PARAMS:
-                return format_to(ctx.out(), "KRB5_ERR_BAD_S2K_PARAMS");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_BAD_S2K_PARAMS");
 
             case krb5_minor::KRB5_ERR_NO_SERVICE:
-                return format_to(ctx.out(), "KRB5_ERR_NO_SERVICE");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_NO_SERVICE");
 
             case krb5_minor::KRB5_CC_READONLY:
-                return format_to(ctx.out(), "KRB5_CC_READONLY");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_READONLY");
 
             case krb5_minor::KRB5_CC_NOSUPP:
-                return format_to(ctx.out(), "KRB5_CC_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_CC_NOSUPP");
 
             case krb5_minor::KRB5_DELTAT_BADFORMAT:
-                return format_to(ctx.out(), "KRB5_DELTAT_BADFORMAT");
+                return fmtns::format_to(ctx.out(), "KRB5_DELTAT_BADFORMAT");
 
             case krb5_minor::KRB5_PLUGIN_NO_HANDLE:
-                return format_to(ctx.out(), "KRB5_PLUGIN_NO_HANDLE");
+                return fmtns::format_to(ctx.out(), "KRB5_PLUGIN_NO_HANDLE");
 
             case krb5_minor::KRB5_PLUGIN_OP_NOTSUPP:
-                return format_to(ctx.out(), "KRB5_PLUGIN_OP_NOTSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_PLUGIN_OP_NOTSUPP");
 
             case krb5_minor::KRB5_ERR_INVALID_UTF8:
-                return format_to(ctx.out(), "KRB5_ERR_INVALID_UTF8");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_INVALID_UTF8");
 
             case krb5_minor::KRB5_ERR_FAST_REQUIRED:
-                return format_to(ctx.out(), "KRB5_ERR_FAST_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5_ERR_FAST_REQUIRED");
 
             case krb5_minor::KRB5_LOCAL_ADDR_REQUIRED:
-                return format_to(ctx.out(), "KRB5_LOCAL_ADDR_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5_LOCAL_ADDR_REQUIRED");
 
             case krb5_minor::KRB5_REMOTE_ADDR_REQUIRED:
-                return format_to(ctx.out(), "KRB5_REMOTE_ADDR_REQUIRED");
+                return fmtns::format_to(ctx.out(), "KRB5_REMOTE_ADDR_REQUIRED");
 
             case krb5_minor::KRB5_TRACE_NOSUPP:
-                return format_to(ctx.out(), "KRB5_TRACE_NOSUPP");
+                return fmtns::format_to(ctx.out(), "KRB5_TRACE_NOSUPP");
 
             default:
-                return format_to(ctx.out(), "{}", (int32_t)t);
+                return fmtns::format_to(ctx.out(), "{}", (int32_t)t);
         }
     }
 };
