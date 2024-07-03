@@ -2226,6 +2226,7 @@ namespace tds {
         requires std::is_integral_v<T> && (!std::is_signed_v<T>)
         constexpr numeric(T v) noexcept : numeric(static_cast<uint64_t>(v)) { }
 
+#ifdef __cpp_lib_to_chars
         numeric(std::floating_point auto d) noexcept {
             char buf[128];
             int exp;
@@ -2280,6 +2281,9 @@ namespace tds {
                 ten_mult();
             }
         }
+#else
+        numeric(std::floating_point auto d) noexcept = delete;
+#endif
 
         template<unsigned N2>
         constexpr numeric(const numeric<N2>& n) noexcept {
