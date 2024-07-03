@@ -64,6 +64,12 @@
 #define WARN_UNUSED
 #endif
 
+#if __cpp_lib_constexpr_string >= 201907
+#define TDSCPP_CONSTEXPR_STRING constexpr
+#else
+#define TDSCPP_CONSTEXPR_STRING
+#endif
+
 namespace tds {
     enum class sql_type : uint8_t {
         SQL_NULL = 0x1F,
@@ -303,7 +309,7 @@ namespace tds {
         utf8_to_utf16_range(std::string_view((char*)sv.data(), sv.length()), t);
     }
 
-    static constexpr std::u16string utf8_to_utf16(std::string_view sv) {
+    static TDSCPP_CONSTEXPR_STRING std::u16string utf8_to_utf16(std::string_view sv) {
         if (sv.empty())
             return u"";
 
@@ -314,7 +320,7 @@ namespace tds {
         return ret;
     }
 
-    static constexpr std::u16string utf8_to_utf16(std::u8string_view sv) {
+    static TDSCPP_CONSTEXPR_STRING std::u16string utf8_to_utf16(std::u8string_view sv) {
         if (sv.empty())
             return u"";
 
@@ -501,7 +507,7 @@ namespace tds {
         }
     }
 
-    static constexpr std::string utf16_to_utf8(std::u16string_view sv) {
+    static TDSCPP_CONSTEXPR_STRING std::string utf16_to_utf8(std::u16string_view sv) {
         if (sv.empty())
             return "";
 
@@ -513,7 +519,7 @@ namespace tds {
     }
 
 #if defined(_WIN32) || __WCHAR_WIDTH__ == 16
-    static constexpr std::string utf16_to_utf8(std::wstring_view sv) {
+    static TDSCPP_CONSTEXPR_STRING std::string utf16_to_utf8(std::wstring_view sv) {
         if (sv.empty())
             return "";
 
