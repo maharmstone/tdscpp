@@ -151,6 +151,11 @@ if(BUILD_SAMPLE)
 
     add_executable(tdscpp-test ${TEST_SRC_FILES})
     target_link_libraries(tdscpp-test tdscpp)
+
+    if(NOT HAS_STD_FORMAT)
+        target_link_libraries(tdscpp-test fmt::fmt-header-only)
+    endif()
+
     install(TARGETS tdscpp-test DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
     add_executable(colltest src/colltest.cpp)

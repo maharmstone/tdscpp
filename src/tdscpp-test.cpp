@@ -24,6 +24,13 @@
 #include <codecvt>
 #endif
 
+#ifdef __cpp_lib_format
+#include <format>
+#else
+#include <fmt/format.h>
+using fmt::format;
+#endif
+
 using namespace std;
 
 static void show_msg(string_view, string_view message, string_view, int32_t msgno, int32_t, int16_t,
@@ -111,7 +118,7 @@ int main(int argc, char* argv[]) {
 
             while (sq.fetch_row()) {
                 for (uint16_t i = 0; i < sq.num_columns(); i++) {
-                    cout << format("{}\t", sq[i]);
+                    cout << (string)sq[i] << "\t";
                 }
                 cout << format("\n");
             }
@@ -137,7 +144,7 @@ int main(int argc, char* argv[]) {
 
             while (b.fetch_row()) {
                 for (uint16_t i = 0; i < b.num_columns(); i++) {
-                    cout << format("{}\t", b[i]);
+                    cout << (string)b[i] << "\t";
                 }
                 cout << format("\n");
             }
@@ -148,7 +155,7 @@ int main(int argc, char* argv[]) {
 
             while (sq.fetch_row()) {
                 for (uint16_t i = 0; i < sq.num_columns(); i++) {
-                    cout << format("{}\t", sq[i]);
+                    cout << (string)sq[i] << "\t";
                 }
                 cout << format("\n");
             }
