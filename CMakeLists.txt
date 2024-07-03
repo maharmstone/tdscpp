@@ -10,12 +10,14 @@ option(BUILD_SAMPLE        "Build sample program" ON)
 option(WITH_OPENSSL        "Use OpenSSL for encryption" OFF)
 
 if(NOT WIN32)
-    option(ENABLE_KRB5         "Enable Kerberos support" OFF)
+    option(ENABLE_KRB5         "Enable Kerberos support" ON)
 endif()
 
 find_package(nlohmann_json REQUIRED)
 
 if(ENABLE_KRB5)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(KRB5 REQUIRED IMPORTED_TARGET mit-krb5-gssapi)
     set(HAVE_GSSAPI 1)
 endif()
 
@@ -119,7 +121,7 @@ if(WIN32)
         target_link_libraries(tdscpp ws2_32 secur32 crypt32)
     endif()
 elseif(ENABLE_KRB5)
-	target_link_libraries(tdscpp gssapi_krb5)
+	target_link_libraries(tdscpp PkgConfig::KRB5)
 endif()
 
 install(TARGETS tdscpp

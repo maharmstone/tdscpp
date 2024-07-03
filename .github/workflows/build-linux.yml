@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-rolling
     steps:
       - run: apt-get update
-      - run: apt-get install -y g++ git cmake nlohmann-json3-dev libicu-dev nodejs libssl-dev libkrb5-dev
+      - run: apt-get install -y g++ git cmake nlohmann-json3-dev libicu-dev nodejs libssl-dev libkrb5-dev pkg-config
       - run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
       - run: git clone ${{ github.server_url }}/${{ github.repository }} ${SHORT_SHA}
       - run: cd ${SHORT_SHA} && git checkout ${{ github.sha }}
