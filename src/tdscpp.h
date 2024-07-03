@@ -70,6 +70,12 @@
 #define TDSCPP_CONSTEXPR_STRING
 #endif
 
+#if __cpp_lib_constexpr_vector >= 201907
+#define TDSCPP_CONSTEXPR_VECTOR constexpr
+#else
+#define TDSCPP_CONSTEXPR_VECTOR
+#endif
+
 namespace tds {
     enum class sql_type : uint8_t {
         SQL_NULL = 0x1F,
@@ -952,11 +958,11 @@ namespace tds {
 
         value(wchar_t) = delete;
 
-        constexpr value() {
+        TDSCPP_CONSTEXPR_VECTOR value() {
             type = (sql_type)0;
         }
 
-        constexpr value(std::nullptr_t) {
+        TDSCPP_CONSTEXPR_VECTOR value(std::nullptr_t) {
             type = sql_type::SQL_NULL;
             is_null = true;
         }
@@ -1178,7 +1184,7 @@ namespace tds {
         value(const datetimeoffset& dt);
         value(const std::optional<datetimeoffset>& t);
 
-        constexpr value(std::span<const std::byte> bin) {
+        TDSCPP_CONSTEXPR_VECTOR value(std::span<const std::byte> bin) {
             type = sql_type::VARBINARY;
             val.reserve(bin.size());
 
@@ -1188,7 +1194,7 @@ namespace tds {
         }
 
         template<typename T> requires byte_list<T>
-        constexpr value(const std::optional<T>& bin) {
+        TDSCPP_CONSTEXPR_VECTOR value(const std::optional<T>& bin) {
             type = sql_type::VARBINARY;
 
             if (!bin.has_value())
@@ -1203,13 +1209,13 @@ namespace tds {
             }
         }
 
-        constexpr value(bool b) {
+        TDSCPP_CONSTEXPR_VECTOR value(bool b) {
             type = sql_type::BITN;
             val.resize(sizeof(uint8_t));
             val[0] = b ? 1 : 0;
         }
 
-        constexpr value(const std::optional<bool>& b) {
+        TDSCPP_CONSTEXPR_VECTOR value(const std::optional<bool>& b) {
             type = sql_type::BITN;
             val.resize(sizeof(uint8_t));
 
