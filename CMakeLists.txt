@@ -155,6 +155,11 @@ if(BUILD_SAMPLE)
 
     add_executable(colltest src/colltest.cpp)
     target_link_libraries(colltest tdscpp)
+
+    if(NOT HAS_STD_FORMAT)
+        target_link_libraries(colltest fmt::fmt-header-only)
+    endif()
+
     install(TARGETS colltest DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
     if(MSVC)

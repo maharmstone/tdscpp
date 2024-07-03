@@ -16,9 +16,15 @@
  * along with tdscpp.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include <string>
-#include <format>
 #include <iostream>
 #include "tdscpp.h"
+
+#ifdef __cpp_lib_format
+#include <format>
+#else
+#include <fmt/format.h>
+using fmt::format;
+#endif
 
 using namespace std;
 
