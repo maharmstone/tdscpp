@@ -19,6 +19,8 @@
 
 using namespace std;
 
+#ifdef __cpp_lib_constexpr_vector
+
 constexpr bool value_test(const tds::value& v, enum tds::sql_type type, bool null, const vector<uint8_t>& exp) {
     if (v.type != type)
         return false;
@@ -160,3 +162,5 @@ static_assert(value_test(tds::value{false}, tds::sql_type::BITN, false, { 0x00 }
 static_assert(value_test(tds::value{optional<bool>{true}}, tds::sql_type::BITN, false, { 0x01 })); // bool
 static_assert(value_test(tds::value{optional<bool>{false}}, tds::sql_type::BITN, false, { 0x01 })); // bool
 static_assert(value_test(tds::value{optional<bool>{nullopt}}, tds::sql_type::BITN, true, { })); // bool
+
+#endif

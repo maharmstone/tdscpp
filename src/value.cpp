@@ -26,7 +26,13 @@
 using namespace std;
 using fmtns::format;
 
-static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offset) noexcept {
+#ifdef __cpp_lib_constexpr_charconv
+#define CONSTEXPR_CHARCONV constexpr
+#else
+#define CONSTEXPR_CHARCONV
+#endif
+
+static CONSTEXPR_CHARCONV bool parse_time(string_view t, tds::time_t& dur, int16_t& offset) noexcept {
     uint8_t h = 0, m, s;
     uint32_t fracval = 0;
 
@@ -211,6 +217,7 @@ static constexpr bool parse_time(string_view t, tds::time_t& dur, int16_t& offse
     return true;
 }
 
+#ifdef __cpp_lib_constexpr_charconv
 static constexpr bool test_parse_time(string_view t, bool exp_valid, tds::time_t exp_dur, int16_t exp_offset) {
     tds::time_t dur;
     int16_t offset;
@@ -255,6 +262,7 @@ static_assert(test_parse_time("01:23:45.67+04:00", true, chrono::hours{1} + chro
 static_assert(test_parse_time("11:56:12.6789012  PM   -04:45", true, chrono::hours{23} + chrono::minutes{56} + chrono::seconds{12} + tds::time_t{6789012}, -285));
 static_assert(test_parse_time("01:23:45.6789012 +00:60", false, tds::time_t::zero(), 0));
 static_assert(test_parse_time("01:23:45.6789012 -24:00", false, tds::time_t::zero(), 0));
+#endif
 
 template<unsigned N>
 static constexpr bool __inline string_match(string_view sv, const char (&str)[N]) noexcept {
@@ -358,7 +366,7 @@ static constexpr bool test_parse_month_name(string_view s, uint8_t exp) noexcept
 static_assert(test_parse_month_name("jUl", 7));
 static_assert(test_parse_month_name("JuLy", 7));
 
-static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8_t& d) noexcept {
+static CONSTEXPR_CHARCONV bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8_t& d) noexcept {
     if (s2.empty())
         return false;
 
@@ -567,6 +575,7 @@ static constexpr bool parse_date(string_view& s2, uint16_t& y, uint8_t& m, uint8
         return false;
 }
 
+#ifdef __cpp_lib_constexpr_charconv
 static constexpr bool test_parse_date(string_view s, bool exp_valid, uint16_t exp_y, uint8_t exp_m, uint8_t exp_d) noexcept {
     uint16_t y;
     uint8_t m, d;
@@ -749,6 +758,7 @@ static_assert(test_parse_date("jUl31,21", true, 2021, 7, 31));
 static_assert(test_parse_date("jUl-31,21", true, 2021, 7, 31));
 static_assert(test_parse_date("jUl-31-21", true, 2021, 7, 31));
 static_assert(test_parse_date("jUl-31,-21", true, 2021, 7, 31));
+#endif
 
 static constexpr bool is_valid_date(uint16_t y, uint8_t m, uint8_t d) {
     if (y == 0 || m == 0 || d == 0)
@@ -789,7 +799,7 @@ static constexpr bool __inline is_digit(char c) noexcept {
     return c >= '0' && c <= '9';
 }
 
-static constexpr bool parse_datetime(string_view t, uint16_t& y, uint8_t& mon, uint8_t& d, tds::time_t& dur) noexcept {
+static CONSTEXPR_CHARCONV bool parse_datetime(string_view t, uint16_t& y, uint8_t& mon, uint8_t& d, tds::time_t& dur) noexcept {
     // ISO date
     if (t.length() >= 19 && is_digit(t[0]) && is_digit(t[1]) && is_digit(t[2]) && is_digit(t[3]) &&
         t[4] == '-' && is_digit(t[5]) && is_digit(t[6]) && t[7] == '-' && is_digit(t[8]) &&
@@ -899,6 +909,7 @@ static constexpr bool parse_datetime(string_view t, uint16_t& y, uint8_t& mon, u
     return true;
 }
 
+#ifdef __cpp_lib_constexpr_charconv
 static constexpr bool test_parse_datetime(string_view t, bool exp_valid, uint16_t exp_y, uint8_t exp_mon,
                                           uint8_t exp_d, tds::time_t exp_dur) noexcept {
     bool valid;
@@ -935,9 +946,10 @@ static_assert(test_parse_datetime("2021-07-02T10:05:34.1234567-12:34", true, 202
 static_assert(test_parse_datetime("2021-07-02T10:05:34.12345678-12:34", false, 0, 0, 0, tds::time_t::zero()));
 static_assert(test_parse_datetime("2021-07-02 10:05:34am", true, 2021, 7, 2, 10h + 5min + 34s));
 static_assert(test_parse_datetime("July 2, 2021 10:05:34 AM", true, 2021, 7, 2, 10h + 5min + 34s));
+#endif
 
-static constexpr bool parse_datetimeoffset(string_view t, uint16_t& y, uint8_t& mon, uint8_t& d,
-                                           tds::time_t& dur, int16_t& offset) noexcept {
+static CONSTEXPR_CHARCONV bool parse_datetimeoffset(string_view t, uint16_t& y, uint8_t& mon, uint8_t& d,
+                                                    tds::time_t& dur, int16_t& offset) noexcept {
     uint8_t h, mins, s;
 
     // ISO date
@@ -1083,6 +1095,7 @@ static constexpr bool parse_datetimeoffset(string_view t, uint16_t& y, uint8_t& 
     return true;
 }
 
+#ifdef __cpp_lib_constexpr_charconv
 static constexpr bool test_parse_datetimeoffset(string_view t, bool exp_valid, uint16_t exp_y, uint8_t exp_mon,
                                                 uint8_t exp_d, tds::time_t exp_dur, int16_t exp_offset) noexcept {
     bool valid;
@@ -1120,6 +1133,7 @@ static_assert(test_parse_datetimeoffset("2021-07-02T10:05:34.1234567+07:30", tru
 static_assert(test_parse_datetimeoffset("2021-07-02T10:05:34.12345678-08:45", false, 0, 0, 0, tds::time_t::zero(), 0));
 static_assert(test_parse_datetimeoffset("2021-07-02 10:05:34am +09:00", true, 2021, 7, 2, 10h + 5min + 34s, 540));
 static_assert(test_parse_datetimeoffset("July 2, 2021 10:05:34 AM -10:15", true, 2021, 7, 2, 10h + 5min + 34s, -615));
+#endif
 
 static unsigned int coll_to_cp(const tds::collation& coll) {
     if (coll.sort_id == 0) { // Windows collations
