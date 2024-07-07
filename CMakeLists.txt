@@ -64,7 +64,7 @@ set(SRC_FILES src/tdscpp.cpp
     src/ver140coll.cpp
     src/tests.cpp)
 
-add_library(tdscpp SHARED ${SRC_FILES})
+add_library(tdscpp ${SRC_FILES})
 
 if(WIN32)
 	add_definitions(-DNOMINMAX)
