@@ -41,6 +41,11 @@ g++ -std=c++20 -ltdscpp test.cpp
 Release history
 ---------------
 
+* 20240707
+    * Added support for older compiler versions
+    * pkgconfig now used to find Kerberos on Linux
+    * Fixed static compilation
+
 * 20240629
     * Fixed compilation on 32-bit platforms
     * Fixed compilation on Clang
