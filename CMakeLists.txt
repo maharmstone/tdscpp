@@ -135,7 +135,7 @@ install(TARGETS tdscpp
 
 install(EXPORT tdscpp-targets DESTINATION lib/cmake/tdscpp)
 
-if(MSVC)
+if(MSVC AND BUILD_SHARED_LIBS)
     install(FILES $<TARGET_PDB_FILE:tdscpp> DESTINATION bin OPTIONAL)
 endif()
 
