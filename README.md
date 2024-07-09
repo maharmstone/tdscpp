@@ -6,7 +6,11 @@ tdscpp is a C++ library for Microsoft's Tabluar Data Stream (TDS) protocol, whic
 Installation
 ------------
 
-Installation is much the same as for any CMake project:
+For vcpkg, run `vcpkg install tdscpp`.
+
+For Gentoo, install the GURU repository and run `emerge tdscpp`.
+
+For manual installation, it's much the same as for any CMake project:
 
 ````
 mkdir build
