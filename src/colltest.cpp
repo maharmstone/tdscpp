@@ -5539,20 +5539,36 @@ static const string_view colls[] = {
     "Yakut_100_CS_AS_WS_SC_UTF8"
 };
 
-int main() {
-    tds::tds tds("mssql", "sa", "Password1$");
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: colltest <server> [username] [password]\n");
+        return 1;
+    }
 
-    for (const auto& coll : colls) {
-        tds::query sq(tds, tds::no_check{"SELECT N'hello' COLLATE " + string(coll)});
+    try {
+        string server = argv[1];
+        string username = argc >= 3 ? argv[2] : "";
+        string password = argc >= 4 ? argv[3] : "";
 
-        if (!sq.fetch_row())
-            throw runtime_error("No row returned.");
+        // FIXME - prompt for password if username set but password isn't
 
-        const auto& c = sq[0].coll;
+        tds::tds tds(server, username, password);
 
-        cout << format("{}: lcid = {}, ignore_case = {}, ignore_accent = {}, ignore_width = {}, ignore_kana = {}, binary = {}, binary2 = {}, utf8 = {}, reserved = {}, version = {}, sort_id = {}\n",
-                   coll, c.lcid, c.ignore_case, c.ignore_accent, c.ignore_width, c.ignore_kana, c.binary, c.binary2,
-                   c.utf8, c.reserved, c.version, c.sort_id);
+        for (const auto& coll : colls) {
+            tds::query sq(tds, tds::no_check{"SELECT N'hello' COLLATE " + string(coll)});
+
+            if (!sq.fetch_row())
+                throw runtime_error("No row returned.");
+
+            const auto& c = sq[0].coll;
+
+            cout << format("{}: lcid = {}, ignore_case = {}, ignore_accent = {}, ignore_width = {}, ignore_kana = {}, binary = {}, binary2 = {}, utf8 = {}, reserved = {}, version = {}, sort_id = {}\n",
+                    coll, c.lcid, c.ignore_case, c.ignore_accent, c.ignore_width, c.ignore_kana, c.binary, c.binary2,
+                    c.utf8, c.reserved, c.version, c.sort_id);
+        }
+    } catch (const exception& e) {
+        cerr << format("Exception: {}\n", e.what());
+        return 1;
     }
 
     return 0;
