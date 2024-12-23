@@ -233,3 +233,30 @@ N is a number between 0 and 38.
 `tds::datetime` can be used to represent DATETIME and DATETIME2 types. `tds::datetimeoffset`
 adds an offset value, for DATETIMEOFFSET. DATE maps to `std::chrono::year_month_day`,
 and TIME to `std::chrono::time_point`.
+
+Compile-time checks
+-------------------
+
+If you pass a string to `tds::query` or `tds::rpc`, the library will do some basic sanity checking
+at compile-time, and refuse to compile if these fail. These include making sure that there is the
+same number of open brackets and close brackets, and that there are no unterminated quotation
+marks.
+
+If you want to pass a string that you have constructed in as a query, you will need to
+wrap it in `tds::no_check`, e.g.:
+
+````cpp
+static void do_insert(tds::tds& tds, const std::string& column_name, std::string_view value) {
+    std::string q;
+
+    q = "INSERT INTO tbl(" + column + ") VALUES(?)";
+
+    tds.run(tds::no_check{q}, value);
+
+    ...
+}
+````
+
+Note that you should be only doing this if you have to, and never for values. The safe way to
+pass arbitrary values if to use the question mark notation as above. Inserting them directly
+into the string leaves you vulnerable to SQL injection.
