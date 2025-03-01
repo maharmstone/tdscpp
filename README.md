@@ -45,6 +45,9 @@ g++ -std=c++20 -ltdscpp test.cpp
 Release history
 ---------------
 
+* 20250301
+    * Fixed for libfmt 11
+
 * 20240707
     * Added support for older compiler versions
     * pkgconfig now used to find Kerberos on Linux
