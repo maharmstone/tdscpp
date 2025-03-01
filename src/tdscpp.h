@@ -2568,7 +2568,11 @@ struct std::formatter<tds::datetime> {
         if (len_arg != -1) {
             auto arg = ctx.arg((size_t)len_arg);
 
+#if __cpp_lib_format < 202306L
             std::visit_format_arg([&](auto&& v) {
+#else
+            arg.visit([&](auto&& v) {
+#endif
                 if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
                     len2 = (unsigned int)v;
 
@@ -2576,7 +2580,11 @@ struct std::formatter<tds::datetime> {
                         throw format_error("size out of range");
                 } else
                     throw format_error("invalid size argument");
+#if __cpp_lib_format < 202306L
             }, arg);
+#else
+            });
+#endif
         }
 
         if (len2 == 0) {
@@ -2630,7 +2638,11 @@ struct std::formatter<tds::datetimeoffset> {
         if (len_arg != -1) {
             auto arg = ctx.arg((size_t)len_arg);
 
+#if __cpp_lib_format < 202306L
             std::visit_format_arg([&](auto&& v) {
+#else
+            arg.visit([&](auto&& v) {
+#endif
                 if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
                     len2 = (unsigned int)v;
 
@@ -2638,7 +2650,11 @@ struct std::formatter<tds::datetimeoffset> {
                         throw format_error("size out of range");
                 } else
                     throw format_error("invalid size argument");
+#if __cpp_lib_format < 202306L
             }, arg);
+#else
+            });
+#endif
         }
 
         auto d = dto.d;
