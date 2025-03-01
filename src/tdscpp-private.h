@@ -1834,7 +1834,11 @@ struct fmt::formatter<tds::datetime> {
         if (len_arg != -1) {
             auto arg = ctx.arg((size_t)len_arg);
 
+#if FMT_VERSION >= 110000
+            arg.visit([&](auto&& v) {
+#else
             fmt::visit_format_arg([&](auto&& v) {
+#endif
                 if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
                     len2 = (unsigned int)v;
 
@@ -1842,7 +1846,11 @@ struct fmt::formatter<tds::datetime> {
                         throw format_error("size out of range");
                 } else
                     throw format_error("invalid size argument");
+#if FMT_VERSION >= 110000
+            });
+#else
             }, arg);
+#endif
         }
 
         if (len2 == 0) {
@@ -1896,7 +1904,11 @@ struct fmt::formatter<tds::datetimeoffset> {
         if (len_arg != -1) {
             auto arg = ctx.arg((size_t)len_arg);
 
+#if FMT_VERSION >= 110000
+            arg.visit([&](auto&& v) {
+#else
             fmt::visit_format_arg([&](auto&& v) {
+#endif
                 if constexpr (std::is_integral_v<std::remove_reference_t<decltype(v)>>) {
                     len2 = (unsigned int)v;
 
@@ -1904,7 +1916,11 @@ struct fmt::formatter<tds::datetimeoffset> {
                         throw format_error("size out of range");
                 } else
                     throw format_error("invalid size argument");
+#if FMT_VERSION >= 110000
+            });
+#else
             }, arg);
+#endif
         }
 
         auto d = dto.d;
