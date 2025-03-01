@@ -43,35 +43,6 @@ static void show_msg(string_view, string_view message, string_view, int32_t msgn
         cout << format("{}: {}\n", msgno, message);
 }
 
-static string utf16_to_utf8(u16string_view sv) {
-#ifdef _WIN32
-    string ret;
-
-    if (sv.empty())
-        return "";
-
-    auto len = WideCharToMultiByte(CP_UTF8, 0, (const wchar_t*)sv.data(), (int)sv.length(), nullptr, 0,
-                                   nullptr, nullptr);
-
-    if (len == 0)
-        throw runtime_error("WideCharToMultiByte 1 failed.");
-
-    ret.resize(len);
-
-    len = WideCharToMultiByte(CP_UTF8, 0, (const wchar_t*)sv.data(), (int)sv.length(), ret.data(), len,
-                              nullptr, nullptr);
-
-    if (len == 0)
-        throw runtime_error("WideCharToMultiByte 2 failed.");
-
-    return ret;
-#else
-    wstring_convert<codecvt_utf8_utf16<char16_t>, char16_t> convert;
-
-    return convert.to_bytes(sv.data(), sv.data() + sv.length());
-#endif
-}
-
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: tdscpp-test <server> [username] [password]\n");
@@ -112,7 +83,7 @@ int main(int argc, char* argv[]) {
             tds::query sq(n, "SELECT SYSTEM_USER AS [user], ? AS answer, ? AS greeting, ? AS now, ? AS pi, ? AS test", 42, "Hello", tds::datetimeoffset{2010y, chrono::October, 28d, 17, 58, 50, -360}, 3.1415926f, true);
 
             for (uint16_t i = 0; i < sq.num_columns(); i++) {
-                cout << format("{}\t", utf16_to_utf8(sq[i].name));
+                cout << format("{}\t", tds::utf16_to_utf8(sq[i].name));
             }
             cout << format("\n");
 
@@ -138,7 +109,7 @@ int main(int argc, char* argv[]) {
             tds::batch b(n, u"SELECT SYSTEM_USER AS [user], 42 AS answer, @@TRANCOUNT AS tc ORDER BY 1");
 
             for (uint16_t i = 0; i < b.num_columns(); i++) {
-                cout << format("{}\t", utf16_to_utf8(b[i].name));
+                cout << format("{}\t", tds::utf16_to_utf8(b[i].name));
             }
             cout << format("\n");
 
